@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@theme {
+  /* surfaces — depth hierarchy, darkest to lightest */
+  --color-background: #08090d;
+  --color-surface: #0c0e13;
+  --color-surface-alt: #0f1117;
+  --color-surface-elevated: #14171f;
+  --color-surface-hover: #1a1e27;
+
+  /* borders */
+  --color-border: #1e222b;
+  --color-border-strong: #272c37;
+
+  /* text */
+  --color-foreground: #f2f3f5;
+  --color-muted-foreground: #9aa0ab;
+  --color-faint-foreground: #5b616d;
+
+  /* accent: blue -> cyan */
+  --color-accent-400: #38bdf8;
+  --color-accent-500: #0ea5e9;
+  --color-accent-600: #0284c7;
+  --color-accent2-400: #22d3ee;
+  --color-accent2-500: #06b6d4;
+  --color-accent2-600: #0891b2;
+
+  /* status */
+  --color-online: #22c55e;
+  --color-danger: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-busy: #eab308;
+}
+
+/* Palette overrides — swap the values of the same tokens per [data-theme].
+   Component templates only ever reference the token names above, so adding a
+   new palette here is the only change needed to introduce it. */
+[data-theme='light'] {
+  --color-background: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1f5f9;
+  --color-surface-elevated: #ffffff;
+  --color-surface-hover: #e7ebf0;
+
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  --color-foreground: #10131a;
+  --color-muted-foreground: #4b5563;
+  --color-faint-foreground: #8a93a2;
+
+  --color-online: #16a34a;
+  --color-danger: #dc2626;
+  --color-danger-600: #b91c1c;
+  --color-busy: #a16207;
+}
+
+/* Used by RevealOnScroll (src/app/shared/reveal-on-scroll.directive.ts) — applied
+   client-side only, so server-rendered content is never hidden without JS. */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.reveal-transition {
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}

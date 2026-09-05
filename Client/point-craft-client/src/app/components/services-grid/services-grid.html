@@ -1,0 +1,44 @@
+<section id="services" class="bg-surface-alt px-6 py-20">
+  <div class="mx-auto max-w-6xl">
+    <div appRevealOnScroll class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-semibold text-foreground">{{ t().services.heading }}</h2>
+      <p class="mt-3 text-muted-foreground">{{ t().services.subheading }}</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+      @for (service of contentStore.services(); track service.id; let i = $index) {
+        <article
+          [appRevealOnScroll]="i * 100"
+          class="flex flex-col rounded-2xl border border-border bg-surface p-6 transition
+                 hover:-translate-y-1 hover:border-accent-500/40 hover:shadow-xl hover:shadow-accent-500/5"
+        >
+          <div
+            class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br
+                   from-accent-500 to-accent2-500"
+          >
+            <svg [appIcon]="service.icon" class="h-5 w-5 text-white"></svg>
+          </div>
+
+          <h3 class="mt-4 text-lg font-semibold text-foreground">{{ service.title }}</h3>
+          <p class="mt-2 text-sm text-muted-foreground">{{ service.description }}</p>
+
+          <ul class="mt-4 flex-1 space-y-2">
+            @for (feature of service.features; track feature) {
+              <li class="flex items-start gap-2 text-sm text-foreground">
+                <svg appIcon="check" class="mt-0.5 h-4 w-4 shrink-0 text-online"></svg>
+                <span>{{ feature }}</span>
+              </li>
+            }
+          </ul>
+
+          <p
+            class="mt-5 border-t border-border pt-4 text-xs font-medium uppercase tracking-wide
+                   text-faint-foreground"
+          >
+            {{ service.audience }}
+          </p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

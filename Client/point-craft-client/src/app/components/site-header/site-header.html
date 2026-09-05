@@ -1,0 +1,97 @@
+<header class="sticky top-0 z-40 border-b border-border bg-background">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <a
+      href="#"
+      class="flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2
+             focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+    >
+      <img ngSrc="logo.png" width="1024" height="1024" priority alt="" class="h-7 w-7 rounded-lg" />
+      <span class="text-sm font-semibold text-foreground">PointCraft</span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden items-center gap-6 md:flex">
+      @for (link of navLinks; track link.href) {
+        <a
+          [href]="link.href"
+          class="rounded text-sm text-muted-foreground transition hover:text-foreground
+                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500
+                 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+        >
+          {{ t().nav[link.key] }}
+        </a>
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <div role="group" aria-label="Language" class="flex overflow-hidden rounded-lg border border-border">
+        @for (option of localeOptions; track option.id) {
+          <button
+            type="button"
+            [attr.aria-pressed]="locale() === option.id"
+            class="px-2.5 py-1.5 text-xs font-medium transition focus-visible:outline-none
+                   focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
+                   focus-visible:ring-offset-surface"
+            [class.bg-accent-500]="locale() === option.id"
+            [class.text-white]="locale() === option.id"
+            [class.text-faint-foreground]="locale() !== option.id"
+            [class.hover:bg-surface-hover]="locale() !== option.id"
+            (click)="setLocale(option.id)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="flex h-9 w-9 items-center justify-center rounded-lg text-faint-foreground transition
+               hover:bg-surface-hover hover:text-foreground focus-visible:outline-none
+               focus-visible:ring-2 focus-visible:ring-accent-500"
+        [attr.aria-label]="theme() === 'dark' ? t().theme.switchToLight : t().theme.switchToDark"
+        (click)="toggleTheme()"
+      >
+        <svg
+          [appIcon]="theme() === 'dark' ? 'sun' : 'moon'"
+          class="h-4 w-4 transition-transform duration-300 motion-safe:hover:rotate-45"
+        ></svg>
+      </button>
+
+      <a
+        href="#contact"
+        class="hidden rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition
+               hover:bg-accent-600 motion-safe:hover:scale-[1.03] motion-safe:active:scale-[0.98]
+               focus-visible:outline-none focus-visible:ring-2
+               focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface
+               sm:inline-flex"
+      >
+        {{ t().nav.discussProject }}
+      </a>
+
+      <button
+        type="button"
+        class="flex h-9 w-9 items-center justify-center rounded-lg text-faint-foreground
+               hover:bg-surface-hover hover:text-foreground focus-visible:outline-none
+               focus-visible:ring-2 focus-visible:ring-accent-500 md:hidden"
+        [attr.aria-label]="t().nav.openMenu"
+        [attr.aria-expanded]="mobileMenuOpen()"
+        (click)="toggleMobileMenu()"
+      >
+        <svg [appIcon]="mobileMenuOpen() ? 'close' : 'menu'" class="h-4 w-4"></svg>
+      </button>
+    </div>
+  </div>
+
+  @if (mobileMenuOpen()) {
+    <nav aria-label="Mobile" class="border-t border-border bg-surface px-6 py-4 md:hidden">
+      <ul class="space-y-3">
+        @for (link of navLinks; track link.href) {
+          <li>
+            <a [href]="link.href" class="block text-sm text-foreground" (click)="closeMobileMenu()">
+              {{ t().nav[link.key] }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+  }
+</header>

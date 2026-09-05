@@ -1,0 +1,73 @@
+{
+  "repo": "PointCraftApi",
+  "generated": "2026-09-03T00:00:00Z",
+  "description": "Backend for PointCraft (AWS). Same 4-layer architecture as MessengerAzure/Api/MessengerApi (sibling repo) — Domain / Application / Infrastructure / WebAPI, CQRS via MediatR, EF Core, SignalR. Kept as a bare skeleton: no business entities yet.",
+  "projects": [
+    {
+      "name": "Domain",
+      "path": "Domain",
+      "type": "domain",
+      "description": "Entities, enums, repository interfaces. No dependencies on other projects.",
+      "folders": ["Entities", "Enums", "Repositories", "Common", "Exceptions", "ValueObjects"]
+    },
+    {
+      "name": "Application",
+      "path": "Application",
+      "type": "application",
+      "description": "CQRS commands/queries/handlers (MediatR). References Domain only.",
+      "folders": ["CQRS/<Feature>/Commands/<Name>", "CQRS/<Feature>/Queries/<Name>", "CQRS/<Feature>/DTOs", "Common"],
+      "keyFiles": [
+        { "path": "Application/AssemblyMarker.cs", "role": "marker type used for MediatR assembly scanning" },
+        { "path": "Application/Common/IRealtimeNotifier.cs", "role": "abstraction over the SignalR hub, implemented in WebAPI" }
+      ]
+    },
+    {
+      "name": "Infrastructure",
+      "path": "Infrastructure",
+      "type": "infrastructure",
+      "description": "EF Core persistence + repository implementations. References Domain and Application.",
+      "keyFiles": [
+        { "path": "Infrastructure/Persistence/Context/ApplicationDbContext.cs", "role": "dbcontext (no DbSets yet)" },
+        { "path": "Infrastructure/DependencyInjection.cs", "role": "AddInfrastructure() DI registration" }
+      ],
+      "folders": ["Persistence/Context", "Persistence/Configurations", "Persistence/Migrations", "Repositories"],
+      "notes": "DB engine not decided yet. Microsoft.EntityFrameworkCore(+Design/Tools/Relational) is referenced but no provider package (Npgsql/SqlServer/...) is installed. See TODO in DependencyInjection.cs."
+    },
+    {
+      "name": "WebAPI",
+      "path": "WebAPI",
+      "type": "web",
+      "description": "ASP.NET Core Web API + SignalR hub. References all three other projects. Startup/composition root.",
+      "keyFiles": [
+        { "path": "WebAPI/Program.cs", "role": "startup / DI wiring" },
+        { "path": "WebAPI/Hubs/NotificationHub.cs", "role": "signalr-hub" },
+        { "path": "WebAPI/Services/RealtimeNotifier.cs", "role": "IRealtimeNotifier implementation over the hub" },
+        { "path": "WebAPI/Services/CustomUserIdProvider.cs", "role": "maps JWT sub/NameIdentifier claim to SignalR Context.UserIdentifier" },
+        { "path": "WebAPI/Controllers/ApiControllerBase.cs", "role": "base controller, GetCurrentUserId() must match CustomUserIdProvider" }
+      ],
+      "endpoints": [
+        { "type": "hub", "route": "/hubs/notifications", "hub": "WebAPI.Hubs.NotificationHub" },
+        { "type": "docs", "route": "/scalar/v1", "description": "Scalar OpenAPI UI, also served at /" }
+      ]
+    }
+  ],
+  "dependencyGraph": [
+    "Domain <- Application",
+    "Domain <- Infrastructure",
+    "Application <- Infrastructure",
+    "Application <- WebAPI",
+    "Infrastructure <- WebAPI"
+  ],
+  "commands": {
+    "build": "dotnet build PointCraftApi.slnx",
+    "run": "dotnet run --project WebAPI/WebAPI.csproj",
+    "migrations": "dotnet ef migrations add <Name> -p Infrastructure -s WebAPI"
+  },
+  "openDecisions": [
+    "Database engine (Postgres/SQL Server/other) — no EF provider package installed yet.",
+    "Identity provider for JWT (AWS Cognito vs custom) — Program.cs uses generic Jwt:Authority/Jwt:Audience (OIDC), no SDK-specific package.",
+    "Telegram bot integration — appsettings has a disabled TelegramBot:{Enabled,BotToken} placeholder; no package/service wired in yet, see TODO in Program.cs.",
+    "AWS hosting specifics (ECS/Lightsail/EB, S3 for blobs, Secrets Manager/Parameter Store) — not scaffolded, add when decided."
+  ],
+  "reference": "MessengerAzure/Api/MessengerApi (sibling repo) uses the same layering with Azure-specific services (Azure SignalR, Blob Storage, Key Vault, Entra ID); this repo intentionally omits the Azure-specific packages since it targets AWS."
+}

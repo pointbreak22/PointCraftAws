@@ -1,0 +1,33 @@
+<section id="stack" class="bg-background px-6 py-20">
+  <div class="mx-auto max-w-6xl">
+    <div appRevealOnScroll class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-semibold text-foreground">{{ t().stack.heading }}</h2>
+      <p class="mt-3 text-muted-foreground">{{ t().stack.subheading }}</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      @for (area of contentStore.techStack(); track area.id; let i = $index) {
+        <div
+          [appRevealOnScroll]="i * 80"
+          class="rounded-2xl border border-border bg-surface p-6 transition
+                 hover:-translate-y-1 hover:border-accent-500/40 hover:shadow-xl hover:shadow-accent-500/5"
+        >
+          <div class="flex items-center gap-3">
+            <svg [appIcon]="area.icon" class="h-5 w-5 text-accent-500"></svg>
+            <h3 class="text-base font-semibold text-foreground">{{ area.area }}</h3>
+          </div>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+            @for (tech of area.technologies; track tech) {
+              <span class="rounded-full border border-border-strong px-2.5 py-1 text-xs text-muted-foreground">
+                {{ tech }}
+              </span>
+            }
+          </div>
+
+          <p class="mt-4 text-sm text-muted-foreground">{{ area.benefit }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

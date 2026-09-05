@@ -1,0 +1,14 @@
+# Secrets — never commit these
+*.pem
+*.key
+.env
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code local/session state (per-machine, not shared)
+.claude/settings.local.json
+**/.claude/scheduled_tasks.lock

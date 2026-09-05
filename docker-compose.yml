@@ -1,0 +1,44 @@
+services:
+  api:
+    build:
+      context: ./Api/PointCraftApi
+      dockerfile: WebAPI/Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Data Source=/data/pointcraft.db"
+      AllowedOrigins__0: ${ALLOWED_ORIGIN:-http://localhost}
+      Jwt__Authority: ${JWT_AUTHORITY:-}
+      Jwt__Audience: ${JWT_AUDIENCE:-}
+    volumes:
+      - api_data:/data
+    expose:
+      - "8080"
+
+  client:
+    build:
+      context: ./Client/point-craft-client
+    restart: unless-stopped
+    environment:
+      PORT: 4000
+    expose:
+      - "4000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+      - client
+
+volumes:
+  api_data:
+  caddy_data:
+  caddy_config:

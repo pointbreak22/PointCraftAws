@@ -1,0 +1,6 @@
+@WebAPI_HostAddress = http://localhost:5222
+
+GET {{WebAPI_HostAddress}}/scalar/v1
+Accept: text/html
+
+###
