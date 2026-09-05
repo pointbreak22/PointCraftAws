@@ -50,12 +50,16 @@ docker compose up -d --build
 
 ## 5. Backing up the SQLite database
 
+One-off manual backup:
+
 ```bash
 docker run --rm -v pointcraft_api_data:/data -v "$PWD":/backup alpine \
   tar czf /backup/pointcraft-db-backup.tar.gz -C /data .
 ```
 
 (Volume name may be prefixed with the project/folder name — check `docker volume ls` if this fails.)
+
+For a backup that actually survives losing the VM/disk, see "Automated backups to S3" below.
 
 ## 6. Domain + HTTPS
 
@@ -104,6 +108,44 @@ or unconfigured Telegram send never blocks saving the request). Setup:
 
 Test it by submitting the contact form on the site — a message should arrive in the chat with
 the bot within a couple seconds.
+
+## 8. Automated backups to S3
+
+`scripts/backup-to-s3.sh` snapshots the SQLite DB via `sqlite3 .backup` (safe under concurrent
+writes, unlike copying the raw file), gzips it, and uploads it to S3 — all through throwaway
+containers, nothing extra installed on the VM.
+
+Setup:
+
+1. **Create an S3 bucket** and an IAM user scoped to only that bucket — attach an inline
+   policy like:
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [{
+       "Effect": "Allow",
+       "Action": ["s3:PutObject", "s3:GetObject", "s3:ListBucket"],
+       "Resource": ["arn:aws:s3:::YOUR_BUCKET", "arn:aws:s3:::YOUR_BUCKET/*"]
+     }]
+   }
+   ```
+   Deliberately no `s3:DeleteObject` — a leaked key still can't wipe existing backups.
+2. In `~/pointcraft/.env`, set `S3_BACKUP_BUCKET`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
+   `AWS_DEFAULT_REGION`.
+3. Test it once: `bash scripts/backup-to-s3.sh` — should print `Backup uploaded: s3://...`.
+4. Schedule it daily via cron:
+   ```bash
+   crontab -e
+   # add:
+   0 3 * * * /bin/bash /home/ubuntu/pointcraft/scripts/backup-to-s3.sh >> /home/ubuntu/pointcraft/backup.log 2>&1
+   ```
+5. **Retention** — the IAM user can't delete objects, so old backups won't clean themselves up
+   automatically. Set an S3 lifecycle rule instead (bucket → Management → Create lifecycle
+   rule → expire objects after e.g. 30 days) — this is bucket-level config done as the account
+   owner, so it doesn't need any extra permission on the restricted key.
+
+To restore: download a `.gz` from the bucket, `gunzip` it, then copy it into the `api_data`
+volume as `pointcraft.db` (with the `api` container stopped) and restart.
 
 ## Notes
 
