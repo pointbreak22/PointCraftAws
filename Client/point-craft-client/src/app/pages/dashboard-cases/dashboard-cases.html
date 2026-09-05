@@ -1,0 +1,101 @@
+<h1 class="text-lg font-semibold text-foreground">Case studies</h1>
+
+<div class="mt-4 overflow-x-auto rounded-2xl border border-border bg-surface">
+  <table class="w-full min-w-160 text-left text-sm">
+    <thead>
+      <tr class="border-b border-border text-xs uppercase tracking-wide text-faint-foreground">
+        <th class="px-4 py-3 font-medium">Order</th>
+        <th class="px-4 py-3 font-medium">Title (EN)</th>
+        <th class="px-4 py-3 font-medium">Title (RU)</th>
+        <th class="px-4 py-3 font-medium"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track item.id) {
+        <tr class="border-b border-border last:border-0">
+          <td class="px-4 py-3 text-faint-foreground">{{ item.sortOrder }}</td>
+          <td class="px-4 py-3 text-foreground">{{ item.titleEn }}</td>
+          <td class="px-4 py-3 text-foreground">{{ item.titleRu }}</td>
+          <td class="px-4 py-3 text-right">
+            <button type="button" class="text-accent-500 hover:underline" (click)="startEdit(item)">Edit</button>
+            <button type="button" class="ml-3 text-danger hover:underline" (click)="remove(item)">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4" class="px-4 py-6 text-center text-muted-foreground">
+            No case studies yet — the site shows an empty state until you add one.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (editingId() === null) {
+  <button
+    type="button"
+    class="mt-4 rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600"
+    (click)="startAdd()"
+  >
+    Add case study
+  </button>
+} @else {
+  <form
+    class="mt-4 grid max-w-2xl grid-cols-2 gap-4 rounded-2xl border border-border bg-surface p-6"
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    novalidate
+  >
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Title (EN)</label>
+      <input type="text" formControlName="titleEn" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Title (RU)</label>
+      <input type="text" formControlName="titleRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Task (EN)</label>
+      <textarea rows="2" formControlName="taskEn" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Task (RU)</label>
+      <textarea rows="2" formControlName="taskRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Solution (EN)</label>
+      <textarea rows="2" formControlName="solutionEn" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Solution (RU)</label>
+      <textarea rows="2" formControlName="solutionRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div class="col-span-2">
+      <label class="mb-1.5 block text-sm font-medium text-foreground">
+        Results — one per line, "Label EN | Label RU | Value" (e.g. "Load time | Время загрузки | -40%")
+      </label>
+      <textarea rows="3" formControlName="results" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Order</label>
+      <input type="number" formControlName="sortOrder" class="w-full max-w-32 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
+    <div class="col-span-2 flex gap-3">
+      <button type="submit" [disabled]="saving()" class="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600 disabled:opacity-60">
+        {{ saving() ? 'Saving…' : 'Save' }}
+      </button>
+      <button type="button" class="rounded-lg border border-border px-4 py-2 text-sm text-foreground hover:bg-surface-hover" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+}

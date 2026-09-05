@@ -1,3 +1,4 @@
+using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Repositories;
@@ -18,6 +19,12 @@ public static class DependencyInjection
 
         services.AddScoped<IContactRequestRepository, EfContactRequestRepository>();
         services.AddScoped<ITelegramSubscriberRepository, EfTelegramSubscriberRepository>();
+
+        services.AddScoped<IContentRepository<SiteTrustPoint>, EfContentRepository<SiteTrustPoint>>();
+        services.AddScoped<IContentRepository<SiteService>, EfContentRepository<SiteService>>();
+        services.AddScoped<IContentRepository<SiteTechStackArea>, EfContentRepository<SiteTechStackArea>>();
+        services.AddScoped<IContentRepository<SiteProcessStep>, EfContentRepository<SiteProcessStep>>();
+        services.AddScoped<IContentRepository<SiteCaseStudy>, EfContentRepository<SiteCaseStudy>>();
 
         return services;
     }

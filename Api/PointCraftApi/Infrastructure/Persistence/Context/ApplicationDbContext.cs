@@ -10,6 +10,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<ContactRequest> ContactRequests => Set<ContactRequest>();
     public DbSet<TelegramSubscriber> TelegramSubscribers => Set<TelegramSubscriber>();
 
+    public DbSet<SiteTrustPoint> SiteTrustPoints => Set<SiteTrustPoint>();
+    public DbSet<SiteService> SiteServices => Set<SiteService>();
+    public DbSet<SiteTechStackArea> SiteTechStackAreas => Set<SiteTechStackArea>();
+    public DbSet<SiteProcessStep> SiteProcessSteps => Set<SiteProcessStep>();
+    public DbSet<SiteCaseStudy> SiteCaseStudies => Set<SiteCaseStudy>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -1,0 +1,99 @@
+<h1 class="text-lg font-semibold text-foreground">Trust points</h1>
+
+<div class="mt-4 overflow-x-auto rounded-2xl border border-border bg-surface">
+  <table class="w-full min-w-160 text-left text-sm">
+    <thead>
+      <tr class="border-b border-border text-xs uppercase tracking-wide text-faint-foreground">
+        <th class="px-4 py-3 font-medium">Order</th>
+        <th class="px-4 py-3 font-medium">Icon</th>
+        <th class="px-4 py-3 font-medium">Label (EN)</th>
+        <th class="px-4 py-3 font-medium">Label (RU)</th>
+        <th class="px-4 py-3 font-medium"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track item.id) {
+        <tr class="border-b border-border last:border-0">
+          <td class="px-4 py-3 text-faint-foreground">{{ item.sortOrder }}</td>
+          <td class="px-4 py-3 text-muted-foreground">{{ item.icon }}</td>
+          <td class="px-4 py-3 text-foreground">{{ item.labelEn }}</td>
+          <td class="px-4 py-3 text-foreground">{{ item.labelRu }}</td>
+          <td class="px-4 py-3 text-right">
+            <button type="button" class="text-accent-500 hover:underline" (click)="startEdit(item)">Edit</button>
+            <button type="button" class="ml-3 text-danger hover:underline" (click)="remove(item)">Delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (editingId() === null) {
+  <button
+    type="button"
+    class="mt-4 rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600"
+    (click)="startAdd()"
+  >
+    Add trust point
+  </button>
+} @else {
+  <form
+    class="mt-4 grid max-w-xl grid-cols-2 gap-4 rounded-2xl border border-border bg-surface p-6"
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    novalidate
+  >
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Icon (sprite id)</label>
+      <input
+        type="text"
+        formControlName="icon"
+        class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"
+      />
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Order</label>
+      <input
+        type="number"
+        formControlName="sortOrder"
+        class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"
+      />
+    </div>
+
+    <div class="col-span-2">
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Label (EN)</label>
+      <input
+        type="text"
+        formControlName="labelEn"
+        class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"
+      />
+    </div>
+
+    <div class="col-span-2">
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Label (RU)</label>
+      <input
+        type="text"
+        formControlName="labelRu"
+        class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"
+      />
+    </div>
+
+    <div class="col-span-2 flex gap-3">
+      <button
+        type="submit"
+        [disabled]="saving()"
+        class="rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600 disabled:opacity-60"
+      >
+        {{ saving() ? 'Saving…' : 'Save' }}
+      </button>
+      <button
+        type="button"
+        class="rounded-lg border border-border px-4 py-2 text-sm text-foreground hover:bg-surface-hover"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+}

@@ -12,6 +12,15 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+    children: [
+      { path: '', redirectTo: 'requests', pathMatch: 'full' },
+      { path: 'requests', loadComponent: () => import('./pages/dashboard-requests/dashboard-requests').then((m) => m.DashboardRequests) },
+      { path: 'services', loadComponent: () => import('./pages/dashboard-services/dashboard-services').then((m) => m.DashboardServices) },
+      { path: 'tech-stack', loadComponent: () => import('./pages/dashboard-tech-stack/dashboard-tech-stack').then((m) => m.DashboardTechStack) },
+      { path: 'process', loadComponent: () => import('./pages/dashboard-process/dashboard-process').then((m) => m.DashboardProcess) },
+      { path: 'cases', loadComponent: () => import('./pages/dashboard-cases/dashboard-cases').then((m) => m.DashboardCases) },
+      { path: 'trust-points', loadComponent: () => import('./pages/dashboard-trust-points/dashboard-trust-points').then((m) => m.DashboardTrustPoints) },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

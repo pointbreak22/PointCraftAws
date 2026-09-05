@@ -160,7 +160,9 @@ var app = builder.Build();
 // there's no separate migration step to remember for the single-VM deploy.
 using (var scope = app.Services.CreateScope())
 {
-    await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await db.Database.MigrateAsync();
+    await WebAPI.SeedData.ContentSeeder.SeedAsync(db);
 }
 
 app.UseForwardedHeaders(forwardedHeadersOptions);

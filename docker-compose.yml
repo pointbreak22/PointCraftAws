@@ -25,6 +25,10 @@ services:
     restart: unless-stopped
     environment:
       PORT: 4000
+      # Lets server-side rendering ('/') reach the API over the Docker network — see
+      # core/http/api-url.interceptor.ts. Browser requests never use this; they stay relative,
+      # proxied by Caddy.
+      INTERNAL_API_URL: http://api:8080
     expose:
       - "4000"
 
