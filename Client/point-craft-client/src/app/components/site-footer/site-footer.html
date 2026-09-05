@@ -4,6 +4,17 @@
       <img ngSrc="logo.png" width="1024" height="1024" alt="" class="h-6 w-6 rounded-lg" />
       <span class="text-sm font-semibold text-foreground">PointCraft</span>
     </div>
-    <p class="text-xs text-faint-foreground">© {{ year }} {{ t().footer.tagline }}</p>
+    <div class="flex items-center gap-3">
+      <p class="text-xs text-faint-foreground">© {{ year }} {{ t().footer.tagline }}</p>
+      <a
+        routerLink="/login"
+        aria-label="Admin login"
+        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-faint-foreground
+               transition hover:bg-surface-hover hover:text-foreground focus-visible:outline-none
+               focus-visible:ring-2 focus-visible:ring-accent-500"
+      >
+        <svg appIcon="lock" class="h-3.5 w-3.5"></svg>
+      </a>
+    </div>
   </div>
 </footer>

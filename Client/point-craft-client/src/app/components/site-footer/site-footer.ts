@@ -1,10 +1,12 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LocaleStore } from '../../stores/locale.store';
+import { Icon } from '../icon/icon';
 
 @Component({
   selector: 'app-site-footer',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, RouterLink, Icon],
   templateUrl: './site-footer.html',
   styleUrl: './site-footer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
