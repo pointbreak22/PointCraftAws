@@ -43,6 +43,20 @@ Visit `https://pointcraft.duckdns.org/` for the app, `https://pointcraft.duckdns
 
 ## 4. Redeploying after code changes
 
+**Automatic** — `.github/workflows/deploy.yml` builds the `api`/`client` images on GitHub's
+runners (not the VM — it's too small/slow for this, see below), pushes them to GHCR, then SSHes
+into the VM to pull and restart. Just push to `main`; nothing to do on the VM.
+
+One-time setup this required:
+- `VM_SSH_KEY` repo secret — a **dedicated** deploy keypair (not `my-aws-key.pem`), public half
+  appended to the VM's `~/.ssh/authorized_keys`. Keeping it separate means a leaked Actions
+  secret can't be used to fully administer the VM the way the real key can.
+- After the very first successful workflow run, the two GHCR packages are created as **private**
+  by default — go to your GitHub profile → Packages → each package → Package settings → change
+  visibility to Public, so `docker compose pull` on the VM doesn't need any registry credentials.
+
+Manual fallback (e.g. workflow is down, or testing a change before pushing):
+
 ```bash
 git pull
 docker compose up -d --build

@@ -1,5 +1,9 @@
 services:
   api:
+    # image: what `docker compose pull` fetches on the VM (built + pushed by
+    # .github/workflows/deploy.yml). build: still here so local `docker compose build`
+    # keeps working exactly as before, tagging the result with the same name.
+    image: ghcr.io/pointbreak22/pointcraftaws-api:latest
     build:
       context: ./Api/PointCraftApi
       dockerfile: WebAPI/Dockerfile
@@ -20,6 +24,7 @@ services:
       - "8080"
 
   client:
+    image: ghcr.io/pointbreak22/pointcraftaws-client:latest
     build:
       context: ./Client/point-craft-client
     restart: unless-stopped
