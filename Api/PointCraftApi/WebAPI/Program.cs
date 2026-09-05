@@ -156,6 +156,15 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
+// Re-point the static Logger at one that also forwards Error/Fatal events to Telegram
+// (Logs/All subscribers — see TelegramSubscriber) now that app.Services exists for the sink
+// to resolve ITelegramNotifier from. Routine Information/Warning logging is unaffected.
+Serilog.Log.Logger = new Serilog.LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.Sink(new WebAPI.Services.TelegramLogSink(app.Services), Serilog.Events.LogEventLevel.Error)
+    .CreateLogger();
+
 // SQLite is a single local file — auto-migrating on every startup (dev and prod alike) means
 // there's no separate migration step to remember for the single-VM deploy.
 using (var scope = app.Services.CreateScope())

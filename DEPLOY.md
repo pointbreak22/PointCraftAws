@@ -135,7 +135,9 @@ or unconfigured Telegram send never blocks saving the request). Setup:
 5. **Add a recipient row.** Unlike the token, recipients live in the `TelegramSubscribers`
    table (Domain/Entities/TelegramSubscriber.cs), not in `.env` — this is what lets you add
    more people later, or split by notification type (`Requests`, `Logs`, `All`) instead of
-   everyone getting everything. Insert one row per recipient:
+   everyone getting everything. `Logs` recipients get every Error/Fatal-level application log
+   (see `TelegramLogSink`), forwarded automatically once they're inserted — no other setup.
+   Insert one row per recipient:
    ```bash
    docker exec -it pointcraft-api-1 sqlite3 /data/pointcraft.db \
      "INSERT INTO TelegramSubscribers (Id, Name, Username, Type, ChatId, CreatedAtUtc) \

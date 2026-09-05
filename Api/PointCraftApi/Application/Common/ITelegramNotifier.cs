@@ -12,4 +12,15 @@ public interface ITelegramNotifier
         string? projectType,
         string message,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Forwards an Error/Fatal-level log event (see TelegramLogSink) to Logs/All subscribers.
+    /// Failures here must log at Warning, never Error — logging at Error would feed back into
+    /// the sink that calls this method and loop forever.
+    /// </summary>
+    Task NotifyLogAsync(
+        string level,
+        string message,
+        string? exception,
+        CancellationToken cancellationToken = default);
 }
