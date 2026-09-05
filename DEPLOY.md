@@ -87,9 +87,20 @@ or unconfigured Telegram send never blocks saving the request). Setup:
    ```
    TELEGRAM_BOT_ENABLED=true
    TELEGRAM_BOT_TOKEN=<the bot token>
-   TELEGRAM_CHAT_ID=<your chat id>
    ```
-5. `docker compose up -d api` (recreates the container with the new env vars).
+5. **Add a recipient row.** Unlike the token, recipients live in the `TelegramSubscribers`
+   table (Domain/Entities/TelegramSubscriber.cs), not in `.env` — this is what lets you add
+   more people later, or split by notification type (`Requests`, `Logs`, `All`) instead of
+   everyone getting everything. Insert one row per recipient:
+   ```bash
+   docker exec -it pointcraft-api-1 sqlite3 /data/pointcraft.db \
+     "INSERT INTO TelegramSubscribers (Id, Name, Username, Type, ChatId, CreatedAtUtc) \
+      VALUES (lower(hex(randomblob(16))), 'Your Name', '@yourhandle', 'All', '<your chat id>', datetime('now'));"
+   ```
+   (`sqlite3` isn't in the api image — if the command above says "not found," run it via a
+   throwaway container instead: `docker run --rm -v pointcraft_api_data:/data alpine sh -c
+   "apk add --no-cache sqlite >/dev/null && sqlite3 /data/pointcraft.db \"...\""`.)
+6. `docker compose up -d api` (recreates the container with the new env vars).
 
 Test it by submitting the contact form on the site — a message should arrive in the chat with
 the bot within a couple seconds.

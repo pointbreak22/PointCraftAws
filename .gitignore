@@ -9,6 +9,9 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Claude Code local/session state (per-machine, not shared)
+# Claude Code local/session state (per-machine, not shared) — settings.json is auto-recorded
+# per-session command approvals here, not a curated shared allowlist, and has held a live
+# secret before (a Telegram bot token), so treat it the same as .env.
+.claude/settings.json
 .claude/settings.local.json
 **/.claude/scheduled_tasks.lock

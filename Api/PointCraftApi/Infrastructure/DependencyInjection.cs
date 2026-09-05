@@ -17,6 +17,7 @@ public static class DependencyInjection
             options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IContactRequestRepository, EfContactRequestRepository>();
+        services.AddScoped<ITelegramSubscriberRepository, EfTelegramSubscriberRepository>();
 
         return services;
     }

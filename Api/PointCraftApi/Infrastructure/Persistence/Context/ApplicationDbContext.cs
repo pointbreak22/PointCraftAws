@@ -8,6 +8,7 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<ContactRequest> ContactRequests => Set<ContactRequest>();
+    public DbSet<TelegramSubscriber> TelegramSubscribers => Set<TelegramSubscriber>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
