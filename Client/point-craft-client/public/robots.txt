@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /dashboard
 
-# TODO: add "Sitemap: https://yourdomain.com/sitemap.xml" once a domain is set up.
+# TODO: add "Sitemap: https://pointcraft.duckdns.org/sitemap.xml" once a sitemap.xml exists.
