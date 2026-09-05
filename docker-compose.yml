@@ -8,8 +8,10 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: "Data Source=/data/pointcraft.db"
       AllowedOrigins__0: ${ALLOWED_ORIGIN:-http://localhost}
-      Jwt__Authority: ${JWT_AUTHORITY:-}
-      Jwt__Audience: ${JWT_AUDIENCE:-}
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?JWT_SIGNING_KEY must be set in .env}
+      Jwt__Issuer: pointcraft-api
+      Admin__Username: ${ADMIN_USERNAME:?ADMIN_USERNAME must be set in .env}
+      Admin__PasswordHash: ${ADMIN_PASSWORD_HASH:?ADMIN_PASSWORD_HASH must be set in .env}
       TelegramBot__Enabled: ${TELEGRAM_BOT_ENABLED:-false}
       TelegramBot__BotToken: ${TELEGRAM_BOT_TOKEN:-}
     volumes:

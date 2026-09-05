@@ -1,4 +1,5 @@
 using Application.CQRS.ContactRequests.Commands.SubmitContactRequest;
+using Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,11 +7,15 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace WebAPI.Controllers;
 
-// Public — this is the "Discuss your project" form, submitted before any client account exists.
-[AllowAnonymous]
-public class ContactRequestsController(ISender sender) : ApiControllerBase(sender)
+// Submit is public (the "Discuss your project" form, before any client account exists);
+// the GET list is the admin dashboard reading back what was submitted, so it requires auth.
+// [AllowAnonymous] at the controller level would bypass [Authorize] on GetAll entirely, so
+// each action carries its own attribute instead of one shared at the class level.
+public class ContactRequestsController(ISender sender, IContactRequestRepository repository)
+    : ApiControllerBase(sender)
 {
     [HttpPost]
+    [AllowAnonymous]
     [EnableRateLimiting("contact-form")]
     public async Task<IActionResult> Submit([FromBody] SubmitContactRequestDto dto, CancellationToken cancellationToken)
     {
@@ -29,6 +34,17 @@ public class ContactRequestsController(ISender sender) : ApiControllerBase(sende
 
         return Ok(new { id });
     }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var requests = await repository.GetAllAsync(cancellationToken);
+        return Ok(requests.Select(r => new ContactRequestDto(
+            r.Id, r.Name, r.Contact, r.ProjectType, r.Message, r.CreatedAtUtc)));
+    }
 }
 
 public record SubmitContactRequestDto(string Name, string Contact, string? ProjectType, string Message, string? Website = null);
+
+public record ContactRequestDto(Guid Id, string Name, string Contact, string? ProjectType, string Message, DateTime CreatedAtUtc);

@@ -85,19 +85,23 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // MediatR: scans the Application assembly for commands/queries/handlers
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
 
-// JWT auth. Kept provider-agnostic (Authority + Audience) so it works against AWS Cognito
-// or any other standard OIDC issuer without an SDK-specific package — set Jwt:Authority /
-// Jwt:Audience in appsettings once the identity provider is chosen.
+// JWT auth. There's exactly one admin account (no external users), so tokens are issued by
+// our own /api/auth/login (see AuthController) and validated here against a local symmetric
+// signing key — no OIDC provider/AWS Cognito needed for a single-user admin panel.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["Jwt:Authority"];
-        options.Audience = builder.Configuration["Jwt:Audience"];
+        var signingKey = builder.Configuration["Jwt:SigningKey"]
+            ?? throw new InvalidOperationException("Jwt:SigningKey is not configured.");
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
         };
 
         // Let SignalR clients (which can't set an Authorization header) pass the JWT via query string.

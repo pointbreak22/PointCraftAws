@@ -4,12 +4,23 @@
     <span class="text-sm font-semibold text-foreground">PointCraft</span>
   </div>
 
-  <button
-    type="button"
-    class="flex h-8 w-8 items-center justify-center rounded-lg text-faint-foreground hover:bg-surface-hover hover:text-foreground"
-    [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-    (click)="toggleTheme()"
-  >
-    <svg [appIcon]="theme() === 'dark' ? 'sun' : 'moon'" class="h-4 w-4"></svg>
-  </button>
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-8 w-8 items-center justify-center rounded-lg text-faint-foreground hover:bg-surface-hover hover:text-foreground"
+      [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+      (click)="toggleTheme()"
+    >
+      <svg [appIcon]="theme() === 'dark' ? 'sun' : 'moon'" class="h-4 w-4"></svg>
+    </button>
+
+    <button
+      type="button"
+      class="flex h-8 w-8 items-center justify-center rounded-lg text-faint-foreground hover:bg-surface-hover hover:text-foreground"
+      aria-label="Log out"
+      (click)="logout()"
+    >
+      <svg appIcon="log-out" class="h-4 w-4"></svg>
+    </button>
+  </div>
 </header>

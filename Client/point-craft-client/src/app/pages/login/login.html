@@ -1,0 +1,49 @@
+<div class="flex min-h-dvh items-center justify-center bg-background px-4">
+  <form
+    class="w-full max-w-sm rounded-2xl border border-border bg-surface p-8"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    novalidate
+  >
+    <h1 class="text-lg font-semibold text-foreground">Admin login</h1>
+
+    <div class="mt-6">
+      <label for="login-username" class="mb-1.5 block text-sm font-medium text-foreground">Username</label>
+      <input
+        id="login-username"
+        type="text"
+        formControlName="username"
+        autocomplete="username"
+        class="w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground
+               focus:border-accent-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
+      />
+    </div>
+
+    <div class="mt-4">
+      <label for="login-password" class="mb-1.5 block text-sm font-medium text-foreground">Password</label>
+      <input
+        id="login-password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        class="w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-foreground
+               focus:border-accent-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
+      />
+    </div>
+
+    @if (error()) {
+      <p class="mt-4 text-sm text-danger" role="alert">Wrong username or password.</p>
+    }
+
+    <button
+      type="submit"
+      [disabled]="submitting()"
+      class="mt-6 flex w-full items-center justify-center rounded-lg bg-accent-500 px-5 py-2.5 text-sm
+             font-medium text-white transition hover:bg-accent-600 disabled:opacity-60
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500
+             focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+    >
+      {{ submitting() ? 'Signing in…' : 'Sign in' }}
+    </button>
+  </form>
+</div>

@@ -46,3 +46,12 @@ export interface ContactRequest {
   message: string;
   website: string;
 }
+
+export interface ContactRequestListItem {
+  id: string;
+  name: string;
+  contact: string;
+  projectType: string | null;
+  message: string;
+  createdAtUtc: string;
+}

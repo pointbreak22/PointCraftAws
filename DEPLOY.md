@@ -26,7 +26,7 @@ newgrp docker
 git clone <your-repo-url> pointcraft
 cd pointcraft
 cp .env.example .env
-nano .env   # fill in JWT_* once you have an identity provider; ALLOWED_ORIGIN already matches the domain
+nano .env   # fill in JWT_SIGNING_KEY/ADMIN_* (see "Admin login" below); ALLOWED_ORIGIN already matches the domain
 ```
 
 If the code isn't in a git remote yet, `rsync`/`scp` the project folder instead.
@@ -74,7 +74,33 @@ To switch to a real registered domain later: update the DNS A record, replace
 `pointcraft.duckdns.org` in `Caddyfile` and `ALLOWED_ORIGIN` in `.env` with the new domain,
 `docker compose restart caddy && docker compose up -d api`.
 
-## 7. Telegram notifications for new contact requests
+## 7. Admin login
+
+There's exactly one admin account (no AWS Cognito/external identity provider) — the API issues
+its own JWT from `POST /api/auth/login`, validated against a local signing key. Setup or
+changing the password both work the same way — generate a fresh signing key + password hash and
+overwrite `.env`:
+
+```bash
+mkdir -p /tmp/pc-keygen && cd /tmp/pc-keygen
+dotnet new console -o .
+dotnet add package Microsoft.Extensions.Identity.Core
+cat > Program.cs <<'EOF'
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
+var hasher = new PasswordHasher<object>();
+Console.WriteLine("PASSWORD_HASH=" + hasher.HashPassword(new object(), "<your chosen password>"));
+Console.WriteLine("SIGNING_KEY=" + Convert.ToBase64String(RandomNumberGenerator.GetBytes(48)));
+EOF
+dotnet run
+```
+
+Put the two printed values into `~/pointcraft/.env` as `JWT_SIGNING_KEY` and
+`ADMIN_PASSWORD_HASH`, set `ADMIN_USERNAME` to whatever username you want, then
+`docker compose up -d api`. Changing `JWT_SIGNING_KEY` invalidates every previously issued
+token, so anyone logged in gets signed out.
+
+## 8. Telegram notifications for new contact requests
 
 Every submitted "Discuss your project" form fires a Telegram message (best-effort — a failed
 or unconfigured Telegram send never blocks saving the request). Setup:
@@ -109,7 +135,7 @@ or unconfigured Telegram send never blocks saving the request). Setup:
 Test it by submitting the contact form on the site — a message should arrive in the chat with
 the bot within a couple seconds.
 
-## 8. Automated backups to S3
+## 9. Automated backups to S3
 
 `scripts/backup-to-s3.sh` snapshots the SQLite DB via `sqlite3 .backup` (safe under concurrent
 writes, unlike copying the raw file), gzips it, and uploads it to S3 — all through throwaway

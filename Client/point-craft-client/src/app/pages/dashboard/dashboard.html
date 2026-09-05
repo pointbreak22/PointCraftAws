@@ -6,7 +6,40 @@
 
     <app-left-sidebar />
 
-    <main class="min-w-0 flex-1 overflow-y-auto bg-surface-alt">
+    <main class="min-w-0 flex-1 overflow-y-auto bg-surface-alt p-6">
+      <h1 class="text-lg font-semibold text-foreground">Contact requests</h1>
+
+      @if (loading()) {
+        <p class="mt-4 text-sm text-muted-foreground">Loading…</p>
+      } @else if (requests().length === 0) {
+        <p class="mt-4 text-sm text-muted-foreground">No requests yet.</p>
+      } @else {
+        <div class="mt-4 overflow-x-auto rounded-2xl border border-border bg-surface">
+          <table class="w-full min-w-160 text-left text-sm">
+            <thead>
+              <tr class="border-b border-border text-xs uppercase tracking-wide text-faint-foreground">
+                <th class="px-4 py-3 font-medium">Date</th>
+                <th class="px-4 py-3 font-medium">Name</th>
+                <th class="px-4 py-3 font-medium">Contact</th>
+                <th class="px-4 py-3 font-medium">Project type</th>
+                <th class="px-4 py-3 font-medium">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (request of requests(); track request.id) {
+                <tr class="border-b border-border last:border-0">
+                  <td class="whitespace-nowrap px-4 py-3 text-faint-foreground">{{ request.createdAtUtc | date: 'short' }}</td>
+                  <td class="px-4 py-3 text-foreground">{{ request.name }}</td>
+                  <td class="px-4 py-3 text-foreground">{{ request.contact }}</td>
+                  <td class="px-4 py-3 text-muted-foreground">{{ request.projectType || '—' }}</td>
+                  <td class="px-4 py-3 text-muted-foreground">{{ request.message }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
       <router-outlet />
     </main>
 
