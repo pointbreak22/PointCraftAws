@@ -1,5 +1,4 @@
-# No domain yet — plain HTTP on the VM's IP.
-:80 {
+pointcraft.duckdns.org {
 	handle /api/* {
 		reverse_proxy api:8080
 	}
@@ -12,20 +11,3 @@
 		reverse_proxy client:4000
 	}
 }
-
-# Once a domain points at the VM, replace the ":80" block above with this one —
-# Caddy will provision and renew the Let's Encrypt certificate automatically.
-#
-# yourdomain.com {
-# 	handle /api/* {
-# 		reverse_proxy api:8080
-# 	}
-#
-# 	handle /hubs/* {
-# 		reverse_proxy api:8080
-# 	}
-#
-# 	handle {
-# 		reverse_proxy client:4000
-# 	}
-# }

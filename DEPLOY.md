@@ -7,7 +7,7 @@ and `caddy` (reverse proxy on port 80/443). SQLite lives in the `api_data` named
 
 On the EC2 instance's **security group**, allow inbound:
 - 22 (SSH) — ideally restricted to your IP
-- 80 (HTTP) — and 443 once you add a domain, see below
+- 80 (HTTP) and 443 (HTTPS)
 
 SSH in and install Docker:
 
@@ -26,7 +26,7 @@ newgrp docker
 git clone <your-repo-url> pointcraft
 cd pointcraft
 cp .env.example .env
-nano .env   # fill in ALLOWED_ORIGIN=http://<VM_IP> (and JWT_* once you have a provider)
+nano .env   # fill in JWT_* once you have an identity provider; ALLOWED_ORIGIN already matches the domain
 ```
 
 If the code isn't in a git remote yet, `rsync`/`scp` the project folder instead.
@@ -39,7 +39,7 @@ docker compose ps
 docker compose logs -f api   # confirm "Applying migration..." / no errors
 ```
 
-Visit `http://<VM_IP>/` for the app, `http://<VM_IP>/api/...` for API routes.
+Visit `https://pointcraft.duckdns.org/` for the app, `https://pointcraft.duckdns.org/api/...` for API routes.
 
 ## 4. Redeploying after code changes
 
@@ -57,12 +57,18 @@ docker run --rm -v pointcraft_api_data:/data -v "$PWD":/backup alpine \
 
 (Volume name may be prefixed with the project/folder name — check `docker volume ls` if this fails.)
 
-## 6. Adding a real domain + HTTPS later
+## 6. Domain + HTTPS
 
-1. Point the domain's DNS A record at the VM's IP (use an Elastic IP so it doesn't change).
-2. In `Caddyfile`, replace the `:80 { ... }` block with the commented-out `yourdomain.com { ... }` block.
-3. Open port 443 in the security group.
-4. `docker compose up -d` — Caddy requests and renews the Let's Encrypt certificate automatically.
+The site runs on `pointcraft.duckdns.org` (DuckDNS, pointed at the VM's IP — AWS's free EC2
+public DNS/IP can't get a Let's Encrypt cert, and there's no paid domain yet). `Caddyfile` is
+already configured for this domain, so Caddy requests and renews the certificate automatically.
+
+If the VM's IP ever changes (e.g. after a full Stop/Start without an Elastic IP), update the
+A record on [duckdns.org](https://www.duckdns.org) to the new IP — no other config changes needed.
+
+To switch to a real registered domain later: update the DNS A record, replace
+`pointcraft.duckdns.org` in `Caddyfile` and `ALLOWED_ORIGIN` in `.env` with the new domain,
+`docker compose restart caddy && docker compose up -d api`.
 
 ## Notes
 
