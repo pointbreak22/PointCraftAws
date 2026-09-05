@@ -1,10 +1,13 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -118,10 +121,34 @@ builder.Services.AddSingleton<Microsoft.AspNetCore.SignalR.IUserIdProvider, WebA
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<Application.Common.IRealtimeNotifier, WebAPI.Services.RealtimeNotifier>();
 
-// TODO: Telegram bot integration (optional — see appsettings "TelegramBot" section).
-// Wire it up here once needed, e.g.:
-//   if (builder.Configuration.GetValue<bool>("TelegramBot:Enabled"))
-//       builder.Services.AddHostedService<WebAPI.Services.TelegramBotService>();
+// Telegram: just a "sendMessage" call, no polling/webhook — see appsettings "TelegramBot" section.
+builder.Services.AddHttpClient<Application.Common.ITelegramNotifier, WebAPI.Services.TelegramNotifier>(client =>
+{
+    client.BaseAddress = new Uri("https://api.telegram.org");
+});
+
+// The API only ever sees traffic proxied through Caddy, so every request's RemoteIpAddress
+// would otherwise be the Caddy container's — trust its X-Forwarded-For so rate limiting
+// (below) partitions by the real client IP instead of one shared bucket for everyone.
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+};
+forwardedHeadersOptions.KnownIPNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy("contact-form", httpContext => RateLimitPartition.GetFixedWindowLimiter(
+        partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        factory: _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 5,
+            Window = TimeSpan.FromMinutes(15),
+            QueueLimit = 0,
+        }));
+});
 
 var app = builder.Build();
 
@@ -132,6 +159,8 @@ using (var scope = app.Services.CreateScope())
     await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
 }
 
+app.UseForwardedHeaders(forwardedHeadersOptions);
+
 app.MapOpenApi();
 app.MapScalarApiReference(); // UI: /scalar/v1
 app.MapGet("/", () => Results.Redirect("/scalar/v1"));
@@ -141,6 +170,7 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 app.MapHub<NotificationHub>("/hubs/notifications");

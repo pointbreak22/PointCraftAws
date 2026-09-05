@@ -27,6 +27,9 @@ export class ContactSection {
     contact: this.fb.control('', Validators.required),
     projectType: this.fb.control(''),
     message: this.fb.control('', Validators.required),
+    // Honeypot: real visitors never see this field, so anything a bot's autofill puts here
+    // marks the submission as spam. See ContactRequestsController.Submit.
+    website: this.fb.control(''),
   });
 
   submit(): void {

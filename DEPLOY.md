@@ -70,6 +70,30 @@ To switch to a real registered domain later: update the DNS A record, replace
 `pointcraft.duckdns.org` in `Caddyfile` and `ALLOWED_ORIGIN` in `.env` with the new domain,
 `docker compose restart caddy && docker compose up -d api`.
 
+## 7. Telegram notifications for new contact requests
+
+Every submitted "Discuss your project" form fires a Telegram message (best-effort — a failed
+or unconfigured Telegram send never blocks saving the request). Setup:
+
+1. **Create the bot.** In Telegram, message [@BotFather](https://t.me/BotFather), send
+   `/newbot`, follow the prompts (name, username). It replies with a **bot token**
+   (looks like `123456789:AAExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`).
+2. **Start a chat with your new bot** (search its username, press Start, send it any message —
+   e.g. "hi") so it's allowed to message you back.
+3. **Get your chat ID.** Open this URL in a browser (replace `<TOKEN>`):
+   `https://api.telegram.org/bot<TOKEN>/getUpdates` — after step 2 it returns JSON containing
+   `"chat":{"id":123456789,...}`. That number is your **chat ID**.
+4. On the VM, in `~/pointcraft/.env`, set:
+   ```
+   TELEGRAM_BOT_ENABLED=true
+   TELEGRAM_BOT_TOKEN=<the bot token>
+   TELEGRAM_CHAT_ID=<your chat id>
+   ```
+5. `docker compose up -d api` (recreates the container with the new env vars).
+
+Test it by submitting the contact form on the site — a message should arrive in the chat with
+the bot within a couple seconds.
+
 ## Notes
 
 - **`my-aws-key.pem`**: this is your SSH private key. Never commit it, never copy it into a

@@ -12,6 +12,11 @@
       </div>
     } @else {
       <form appRevealOnScroll class="mt-10 space-y-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="absolute left-[-9999px]" aria-hidden="true">
+          <label for="contact-website">Leave this field empty</label>
+          <input id="contact-website" type="text" formControlName="website" tabindex="-1" autocomplete="off" />
+        </div>
+
         <div>
           <label for="contact-name" class="mb-1.5 block text-sm font-medium text-foreground">
             {{ t().contact.nameLabel }}

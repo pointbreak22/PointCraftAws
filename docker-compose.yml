@@ -10,6 +10,9 @@ services:
       AllowedOrigins__0: ${ALLOWED_ORIGIN:-http://localhost}
       Jwt__Authority: ${JWT_AUTHORITY:-}
       Jwt__Audience: ${JWT_AUDIENCE:-}
+      TelegramBot__Enabled: ${TELEGRAM_BOT_ENABLED:-false}
+      TelegramBot__BotToken: ${TELEGRAM_BOT_TOKEN:-}
+      TelegramBot__ChatId: ${TELEGRAM_CHAT_ID:-}
     volumes:
       - api_data:/data
     expose:
