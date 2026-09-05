@@ -10,7 +10,10 @@ import { join } from 'node:path';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+// Caddy (the only thing that can reach this container — see docker-compose.yml) sets
+// X-Forwarded-* headers; without trusting them here, Angular's SSRF guard deopts every SSR
+// request to CSR (see https://angular.dev/best-practices/security#configuring-trusted-proxy-headers).
+const angularApp = new AngularNodeAppEngine({ trustProxyHeaders: true });
 
 /**
  * Example Express Rest API endpoints can be defined here.
