@@ -69,7 +69,7 @@
           >
             <option value="">{{ t().contact.projectTypePlaceholder }}</option>
             @for (service of contentStore.services(); track service.id) {
-              <option [value]="service.id">{{ service.title }}</option>
+              <option [value]="service.title">{{ service.title }}</option>
             }
           </select>
         </div>
