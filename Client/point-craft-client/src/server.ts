@@ -28,13 +28,23 @@ const angularApp = new AngularNodeAppEngine({ trustProxyHeaders: true });
  */
 
 /**
- * Serve static files from /browser
+ * Serve static files from /browser. A year-long cache is only safe for Angular's own
+ * content-hashed bundles (chunk-*.js, main-*.js, styles-*.css, polyfills-*.js) — a rebuild
+ * gives them a new filename. Everything else here is a fixed-name file straight from
+ * public/ (icons.svg, logo.png, favicon.ico, robots.txt); caching those for a year means an
+ * edit — like adding an icon to the sprite — can go unseen by returning visitors for a year.
  */
+const hashedBundlePattern = /[\\/](chunk|main|styles|polyfills)-[\w-]+\.(js|css|mjs)$/;
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
     index: false,
     redirect: false,
+    setHeaders: (res, filePath) => {
+      if (!hashedBundlePattern.test(filePath)) {
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+      }
+    },
   }),
 );
 
