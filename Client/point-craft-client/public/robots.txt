@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /dashboard
 
-# TODO: add "Sitemap: https://pointcraft.duckdns.org/sitemap.xml" once a sitemap.xml exists.
+Sitemap: https://pointcraft.duckdns.org/sitemap.xml
