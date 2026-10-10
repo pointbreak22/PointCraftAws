@@ -29,7 +29,7 @@ public static class RelaunchContent
         {
             SortOrder = 2, Icon = "server",
             AreaEn = "Backend", AreaRu = "Backend",
-            Technologies = [".NET 10 / ASP.NET Core", "MediatR (CQRS)", "Node.js", "Laravel (PHP)"],
+            Technologies = [".NET 10 / ASP.NET Core", "MediatR (CQRS)", "Node.js", "Laravel (PHP)", "Python (Django / Flask)", "Java (Spring Boot)"],
             BenefitEn = "Business logic split into clear layers — easy to test, extend, and hand over to another team.",
             BenefitRu = "Бизнес-логика разложена по слоям — её легко тестировать, расширять и передавать другой команде.",
         },

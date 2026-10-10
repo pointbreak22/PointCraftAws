@@ -11,12 +11,15 @@ namespace WebAPI.SeedData;
 //
 //   revision 2 — relaunch: new services/tech stack/trust points, the first real case studies,
 //                and slugs for every service and case study (they now have their own pages).
+//   revision 3 — Python (Django / Flask) and Java (Spring Boot) added to the Backend tech stack.
 //
 // A table is only rewritten when it's empty or still holds exactly the original seed (matched
 // by English title); anything the admin added or renamed is kept and just gets a slug.
 public static partial class ContentSeeder
 {
     private const int RelaunchRevision = 2;
+    private const int BackendLanguagesRevision = 3;
+    private static readonly string[] BackendLanguages = ["Python (Django / Flask)", "Java (Spring Boot)"];
 
     // English titles of the content seeded before the relaunch (revision 1, never recorded as a
     // row — it predates AppliedContentRevisions). Used to tell "untouched seed" from admin edits.
@@ -37,6 +40,27 @@ public static partial class ContentSeeder
             db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = RelaunchRevision, AppliedAtUtc = DateTime.UtcNow });
             await db.SaveChangesAsync(cancellationToken);
         }
+
+        if (!applied.Contains(BackendLanguagesRevision))
+        {
+            await AddBackendLanguagesAsync(db, logger, cancellationToken);
+            db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = BackendLanguagesRevision, AppliedAtUtc = DateTime.UtcNow });
+            await db.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    // Appends to whatever the Backend card holds now (the admin may have edited it) instead of
+    // replacing it; skips entries already there, e.g. on a fresh DB seeded by revision 2.
+    private static async Task AddBackendLanguagesAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
+    {
+        var backend = await db.SiteTechStackAreas.FirstOrDefaultAsync(x => x.AreaEn == "Backend", cancellationToken);
+        if (backend is null)
+        {
+            logger.LogInformation("Content revision {Revision}: no \"Backend\" tech stack area, nothing to add.", BackendLanguagesRevision);
+            return;
+        }
+
+        backend.Technologies = [.. backend.Technologies, .. BackendLanguages.Where(x => !backend.Technologies.Contains(x))];
     }
 
     private static async Task ApplyRelaunchAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
