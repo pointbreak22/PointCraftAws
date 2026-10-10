@@ -4,7 +4,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Locale } from '../../interfaces/locale';
 import { localizePath } from '../../shared/locale-path';
 import { LocaleStore } from '../../stores/locale.store';
-import { GITHUB_URL, ORGANIZATION_ID, SITE_LOGO, SITE_NAME, SITE_URL } from './site';
+import { GITHUB_URL, OG_IMAGE, OG_IMAGE_SIZE, ORGANIZATION_ID, SITE_LOGO, SITE_NAME, SITE_URL } from './site';
 
 export interface SeoData {
   title: string;
@@ -43,13 +43,16 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ property: 'og:title', content: data.title });
     this.meta.updateTag({ property: 'og:description', content: data.description });
-    this.meta.updateTag({ property: 'og:image', content: SITE_LOGO });
+    this.meta.updateTag({ property: 'og:image', content: OG_IMAGE[locale] });
+    this.meta.updateTag({ property: 'og:image:width', content: String(OG_IMAGE_SIZE.width) });
+    this.meta.updateTag({ property: 'og:image:height', content: String(OG_IMAGE_SIZE.height) });
+    this.meta.updateTag({ property: 'og:image:alt', content: `${SITE_NAME} — ${this.localeStore.t().seo.organizationDescription}` });
     this.meta.updateTag({ property: 'og:locale', content: OG_LOCALE[locale] });
     this.meta.updateTag({ property: 'og:locale:alternate', content: OG_LOCALE[locale === 'ru' ? 'en' : 'ru'] });
-    this.meta.updateTag({ name: 'twitter:card', content: 'summary' });
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: data.title });
     this.meta.updateTag({ name: 'twitter:description', content: data.description });
-    this.meta.updateTag({ name: 'twitter:image', content: SITE_LOGO });
+    this.meta.updateTag({ name: 'twitter:image', content: OG_IMAGE[locale] });
 
     this.setLink('canonical', null, data.noindex ? null : url);
     for (const alternate of LOCALES) {
