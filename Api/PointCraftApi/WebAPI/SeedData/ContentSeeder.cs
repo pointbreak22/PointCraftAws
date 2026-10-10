@@ -1,167 +1,90 @@
+using System.Text.RegularExpressions;
 using Domain.Entities;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.SeedData;
 
-// One-time transcription of the content that used to be hardcoded in the Angular
-// ContentService (Client/.../services/content.service.ts) — runs on every startup but only
-// inserts when a table is empty, so it's a no-op once the admin has edited anything.
-// SiteCaseStudies is deliberately left unseeded: the site's case-studies section already
-// renders an empty state, which is exactly right until the admin adds real ones.
-public static class ContentSeeder
+// Landing content is admin-editable, so the seeder must never clobber the admin's edits — but a
+// release sometimes needs to rewrite the seeded copy itself (the "PointBreak Lab" relaunch did).
+// Each such rewrite is a numbered revision, applied once and recorded in AppliedContentRevisions:
+//
+//   revision 2 — relaunch: new services/tech stack/trust points, the first real case studies,
+//                and slugs for every service and case study (they now have their own pages).
+//
+// A table is only rewritten when it's empty or still holds exactly the original seed (matched
+// by English title); anything the admin added or renamed is kept and just gets a slug.
+public static partial class ContentSeeder
 {
-    public static async Task SeedAsync(ApplicationDbContext db, CancellationToken cancellationToken = default)
+    private const int RelaunchRevision = 2;
+
+    // English titles of the content seeded before the relaunch (revision 1, never recorded as a
+    // row — it predates AppliedContentRevisions). Used to tell "untouched seed" from admin edits.
+    private static readonly HashSet<string> OriginalTrustPoints =
+        ["PageSpeed 90+ out of the box", "SSR on Angular, Next.js, or Nuxt", "Ready-made integrations: 1C, CRM, payment gateways", "Project launch in 3–6 weeks"];
+    private static readonly HashSet<string> OriginalServices =
+        ["Web services & custom systems", "Desktop apps: Windows & cross-platform", "SEO catalog & e-commerce", "SEO audit & performance"];
+    private static readonly HashSet<string> OriginalTechStack =
+        ["Frontend", "Styling", "Backend", "Desktop", "Data & cache"];
+
+    public static async Task SeedAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken = default)
     {
-        if (!await db.SiteTrustPoints.AnyAsync(cancellationToken))
+        var applied = await db.AppliedContentRevisions.Select(x => x.Revision).ToListAsync(cancellationToken);
+
+        if (!applied.Contains(RelaunchRevision))
         {
-            db.SiteTrustPoints.AddRange(
-                new SiteTrustPoint { Id = Guid.NewGuid(), SortOrder = 1, Icon = "check", LabelEn = "PageSpeed 90+ out of the box", LabelRu = "PageSpeed 90+ из коробки" },
-                new SiteTrustPoint { Id = Guid.NewGuid(), SortOrder = 2, Icon = "server", LabelEn = "SSR on Angular, Next.js, or Nuxt", LabelRu = "SSR на Angular, Next.js или Nuxt" },
-                new SiteTrustPoint { Id = Guid.NewGuid(), SortOrder = 3, Icon = "layers", LabelEn = "Ready-made integrations: 1C, CRM, payment gateways", LabelRu = "Готовые интеграции: 1С, CRM, эквайринг" },
-                new SiteTrustPoint { Id = Guid.NewGuid(), SortOrder = 4, Icon = "zap", LabelEn = "Project launch in 3–6 weeks", LabelRu = "Запуск проекта за 3–6 недель" });
+            await ApplyRelaunchAsync(db, logger, cancellationToken);
+            db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = RelaunchRevision, AppliedAtUtc = DateTime.UtcNow });
+            await db.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    private static async Task ApplyRelaunchAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
+    {
+        var trustPoints = await db.SiteTrustPoints.ToListAsync(cancellationToken);
+        if (IsPristine(trustPoints.Select(x => x.LabelEn), OriginalTrustPoints))
+        {
+            db.SiteTrustPoints.RemoveRange(trustPoints);
+            db.SiteTrustPoints.AddRange(WithNewIds(RelaunchContent.TrustPoints()));
+        }
+        else
+        {
+            logger.LogInformation("Content revision {Revision}: trust points were edited by the admin, kept as is.", RelaunchRevision);
         }
 
-        if (!await db.SiteServices.AnyAsync(cancellationToken))
+        var techStack = await db.SiteTechStackAreas.ToListAsync(cancellationToken);
+        if (IsPristine(techStack.Select(x => x.AreaEn), OriginalTechStack))
         {
-            db.SiteServices.AddRange(
-                new SiteService
-                {
-                    Id = Guid.NewGuid(), SortOrder = 1, Icon = "layers",
-                    TitleEn = "Web services & custom systems", TitleRu = "Веб-сервис и кастомные системы",
-                    DescriptionEn = "Client dashboards and internal services built on complex business logic.",
-                    DescriptionRu = "Личные кабинеты и внутренние сервисы со сложной бизнес-логикой.",
-                    FeaturesEn =
-                    [
-                        "Client dashboard with role-based access",
-                        "REST API and integrations with external systems",
-                        "PWA — install the site as an app",
-                        "Architecture designed to scale with load",
-                    ],
-                    FeaturesRu =
-                    [
-                        "Личный кабинет и ролевая модель доступа",
-                        "REST API и интеграции с внешними системами",
-                        "PWA — установка сайта как приложения",
-                        "Проектирование с запасом под рост нагрузки",
-                    ],
-                    AudienceEn = "SaaS products, B2B portals, booking services",
-                    AudienceRu = "SaaS-продукты, B2B-порталы, сервисы бронирования",
-                },
-                new SiteService
-                {
-                    Id = Guid.NewGuid(), SortOrder = 2, Icon = "monitor",
-                    TitleEn = "Desktop apps: Windows & cross-platform", TitleRu = "Desktop-приложения: Windows и кроссплатформенные",
-                    DescriptionEn = "Desktop software for process automation, hardware integration, and local databases.",
-                    DescriptionRu = "Настольные решения для автоматизации процессов, работы с оборудованием и локальными базами данных.",
-                    FeaturesEn =
-                    [
-                        "Cross-platform (Windows/macOS/Linux) with Tauri or Electron — one codebase, every OS",
-                        "Native Windows apps on .NET MAUI/WPF for deep OS integration",
-                        "Works with local hardware, files, and offline databases",
-                        "Auto-updates and signed builds for distribution",
-                    ],
-                    FeaturesRu =
-                    [
-                        "Кроссплатформенно (Windows/macOS/Linux) на Tauri или Electron — один код, все ОС",
-                        "Нативные Windows-приложения на .NET MAUI/WPF при глубокой интеграции с ОС",
-                        "Работа с локальным оборудованием, файлами и офлайн-базами данных",
-                        "Автообновление и подписанные сборки для дистрибуции",
-                    ],
-                    AudienceEn = "Businesses with internal processes, hardware, or offline requirements",
-                    AudienceRu = "Бизнес с внутренними процессами, оборудованием или задачами без постоянного интернета",
-                },
-                new SiteService
-                {
-                    Id = Guid.NewGuid(), SortOrder = 3, Icon = "cart",
-                    TitleEn = "SEO catalog & e-commerce", TitleRu = "SEO-каталог и e-commerce",
-                    DescriptionEn = "A catalog search engines rank well and shoppers can navigate fast.",
-                    DescriptionRu = "Каталог, который поисковики хорошо ранжируют, а покупатели быстро находят нужный товар.",
-                    FeaturesEn =
-                    [
-                        "SSR rendering (Angular, Next.js, Nuxt)",
-                        "Smart filters with no page reloads",
-                        "Payment processing and sync with 1C/MoySklad",
-                        "Dynamic sitemap and query-targeted landing pages",
-                    ],
-                    FeaturesRu =
-                    [
-                        "SSR-рендеринг (Angular, Next.js, Nuxt)",
-                        "Умные фильтры без перезагрузки страницы",
-                        "Приём оплаты и синхронизация с 1С/МойСклад",
-                        "Динамический sitemap и страницы под запросы",
-                    ],
-                    AudienceEn = "Online stores and B2B portals",
-                    AudienceRu = "Интернет-магазины и B2B-порталы",
-                },
-                new SiteService
-                {
-                    Id = Guid.NewGuid(), SortOrder = 4, Icon = "activity",
-                    TitleEn = "SEO audit & performance", TitleRu = "SEO-аудит и ускорение",
-                    DescriptionEn = "We find what's holding your site back in search and fix it.",
-                    DescriptionRu = "Находим, что мешает сайту расти в поиске, и устраняем это.",
-                    FeaturesEn =
-                    [
-                        "Core Web Vitals audit and optimization",
-                        "Fixing indexing errors",
-                        "Schema.org structured data",
-                        "A prioritized roadmap of fixes",
-                    ],
-                    FeaturesRu =
-                    [
-                        "Аудит и оптимизация Core Web Vitals",
-                        "Исправление ошибок индексации",
-                        "Микроразметка Schema.org",
-                        "План приоритетных доработок",
-                    ],
-                    AudienceEn = "Live sites with declining traffic",
-                    AudienceRu = "Действующие сайты с просевшим трафиком",
-                });
+            db.SiteTechStackAreas.RemoveRange(techStack);
+            db.SiteTechStackAreas.AddRange(WithNewIds(RelaunchContent.TechStack()));
+        }
+        else
+        {
+            logger.LogInformation("Content revision {Revision}: tech stack was edited by the admin, kept as is.", RelaunchRevision);
         }
 
-        if (!await db.SiteTechStackAreas.AnyAsync(cancellationToken))
+        var services = await db.SiteServices.ToListAsync(cancellationToken);
+        if (IsPristine(services.Select(x => x.TitleEn), OriginalServices))
         {
-            db.SiteTechStackAreas.AddRange(
-                new SiteTechStackArea
-                {
-                    Id = Guid.NewGuid(), SortOrder = 1, Icon = "zap",
-                    AreaEn = "Frontend", AreaRu = "Frontend",
-                    Technologies = ["Angular", "Next.js (React)", "Nuxt (Vue)"],
-                    BenefitEn = "SSR out of the box — search engines get fully rendered HTML and index it faster.",
-                    BenefitRu = "SSR из коробки — поисковики получают готовый HTML и быстрее индексируют сайт.",
-                },
-                new SiteTechStackArea
-                {
-                    Id = Guid.NewGuid(), SortOrder = 2, Icon = "layers",
-                    AreaEn = "Styling", AreaRu = "Стилизация",
-                    Technologies = ["Tailwind CSS", "Component UI libraries"],
-                    BenefitEn = "Fast styling, responsive by default, and a minimal CSS payload.",
-                    BenefitRu = "Быстрая вёрстка, адаптивность из коробки и минимальный вес стилей.",
-                },
-                new SiteTechStackArea
-                {
-                    Id = Guid.NewGuid(), SortOrder = 3, Icon = "server",
-                    AreaEn = "Backend", AreaRu = "Backend",
-                    Technologies = [".NET (C#)", "Node.js", "Python"],
-                    BenefitEn = "Solid business logic, microservices, and integrations that hold up under load.",
-                    BenefitRu = "Устойчивая бизнес-логика, микросервисы и интеграции без компромиссов в нагрузке.",
-                },
-                new SiteTechStackArea
-                {
-                    Id = Guid.NewGuid(), SortOrder = 4, Icon = "monitor",
-                    AreaEn = "Desktop", AreaRu = "Desktop",
-                    Technologies = ["Tauri", "Electron", ".NET MAUI"],
-                    BenefitEn = "Cross-platform desktop apps on a web stack — one codebase, three operating systems.",
-                    BenefitRu = "Кроссплатформенные десктоп-приложения на веб-стеке — один код, три ОС.",
-                },
-                new SiteTechStackArea
-                {
-                    Id = Guid.NewGuid(), SortOrder = 5, Icon = "database",
-                    AreaEn = "Data & cache", AreaRu = "Данные и кэш",
-                    Technologies = ["PostgreSQL", "Redis", "Entity Framework Core"],
-                    BenefitEn = "Reliable data storage and fast responses even under heavy traffic.",
-                    BenefitRu = "Надёжное хранение данных и быстрый отклик даже при высокой посещаемости.",
-                });
+            db.SiteServices.RemoveRange(services);
+            db.SiteServices.AddRange(WithNewIds(RelaunchContent.Services()));
+        }
+        else
+        {
+            logger.LogInformation("Content revision {Revision}: services were edited by the admin, only slugs were added.", RelaunchRevision);
+            BackfillSlugs(services, x => x.Slug, (x, slug) => x.Slug = slug, x => x.TitleEn);
+        }
+
+        // Case studies were never seeded, so whatever is there is the admin's own — keep it all,
+        // give it slugs, and add each relaunch case study whose slug isn't taken yet.
+        var caseStudies = await db.SiteCaseStudies.ToListAsync(cancellationToken);
+        BackfillSlugs(caseStudies, x => x.Slug, (x, slug) => x.Slug = slug, x => x.TitleEn);
+        var takenSlugs = caseStudies.Select(x => x.Slug).ToHashSet();
+        var nextSortOrder = caseStudies.Count == 0 ? 0 : caseStudies.Max(x => x.SortOrder);
+        foreach (var caseStudy in WithNewIds(RelaunchContent.CaseStudies()).Where(x => !takenSlugs.Contains(x.Slug)))
+        {
+            caseStudy.SortOrder += nextSortOrder;
+            db.SiteCaseStudies.Add(caseStudy);
         }
 
         if (!await db.SiteProcessSteps.AnyAsync(cancellationToken))
@@ -173,7 +96,41 @@ public static class ContentSeeder
                 new SiteProcessStep { Id = Guid.NewGuid(), SortOrder = 4, TitleEn = "SEO setup & testing", TitleRu = "SEO-настройка и тестирование", DescriptionEn = "We configure indexing and structured data, and verify performance.", DescriptionRu = "Настраиваем индексацию, микроразметку и проверяем производительность." },
                 new SiteProcessStep { Id = Guid.NewGuid(), SortOrder = 5, TitleEn = "Launch & support", TitleRu = "Релиз и поддержка", DescriptionEn = "We ship the project, hand over the source code, and stay reachable.", DescriptionRu = "Выкатываем проект, передаём исходники и остаёмся на связи." });
         }
-
-        await db.SaveChangesAsync(cancellationToken);
     }
+
+    private static bool IsPristine(IEnumerable<string> titles, HashSet<string> original) =>
+        titles.All(original.Contains);
+
+    private static List<T> WithNewIds<T>(List<T> items) where T : SiteContentEntity
+    {
+        foreach (var item in items) item.Id = Guid.NewGuid();
+        return items;
+    }
+
+    private static void BackfillSlugs<T>(List<T> items, Func<T, string?> getSlug, Action<T, string> setSlug, Func<T, string> getTitle)
+    {
+        var taken = items.Select(getSlug).OfType<string>().Where(s => s.Length > 0).ToHashSet();
+        foreach (var item in items.Where(x => string.IsNullOrEmpty(getSlug(x))))
+        {
+            var slug = UniqueSlug(Slugify(getTitle(item)), taken);
+            taken.Add(slug);
+            setSlug(item, slug);
+        }
+    }
+
+    public static string Slugify(string text)
+    {
+        var slug = NonSlugChars().Replace(text.ToLowerInvariant(), "-").Trim('-');
+        return slug.Length == 0 ? "item" : slug[..Math.Min(slug.Length, 80)].Trim('-');
+    }
+
+    private static string UniqueSlug(string slug, HashSet<string> taken)
+    {
+        var candidate = slug;
+        for (var i = 2; taken.Contains(candidate); i++) candidate = $"{slug}-{i}";
+        return candidate;
+    }
+
+    [GeneratedRegex("[^a-z0-9]+")]
+    private static partial Regex NonSlugChars();
 }

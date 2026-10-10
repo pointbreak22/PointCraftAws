@@ -1,18 +1,19 @@
 <header class="sticky top-0 z-40 border-b border-border bg-background">
   <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
     <a
-      href="#"
+      [routerLink]="home()"
       class="flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2
              focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
     >
       <img ngSrc="logo.png" width="1024" height="1024" priority alt="" class="h-7 w-7 rounded-lg" />
-      <span class="text-sm font-semibold text-foreground">PointCraft</span>
+      <span class="text-sm font-semibold text-foreground">PointBreak <span class="text-accent-500">Lab</span></span>
     </a>
 
     <nav aria-label="Primary" class="hidden items-center gap-6 md:flex">
-      @for (link of navLinks; track link.href) {
+      @for (link of navLinks; track link.fragment) {
         <a
-          [href]="link.href"
+          [routerLink]="home()"
+          [fragment]="link.fragment"
           class="rounded text-sm text-muted-foreground transition hover:text-foreground
                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500
                  focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
@@ -23,11 +24,13 @@
     </nav>
 
     <div class="flex items-center gap-1.5 sm:gap-2">
-      <div role="group" aria-label="Language" class="flex overflow-hidden rounded-lg border border-border">
-        @for (option of localeOptions; track option.id) {
-          <button
-            type="button"
-            [attr.aria-pressed]="locale() === option.id"
+      <nav [attr.aria-label]="t().nav.language" class="flex overflow-hidden rounded-lg border border-border">
+        @for (option of localeLinks(); track option.id) {
+          <a
+            [routerLink]="option.href"
+            [attr.hreflang]="option.id"
+            [attr.lang]="option.id"
+            [attr.aria-current]="locale() === option.id ? 'page' : null"
             class="px-2.5 py-1.5 text-xs font-medium transition focus-visible:outline-none
                    focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
                    focus-visible:ring-offset-surface"
@@ -35,12 +38,11 @@
             [class.text-white]="locale() === option.id"
             [class.text-faint-foreground]="locale() !== option.id"
             [class.hover:bg-surface-hover]="locale() !== option.id"
-            (click)="setLocale(option.id)"
           >
             {{ option.label }}
-          </button>
+          </a>
         }
-      </div>
+      </nav>
 
       <button
         type="button"
@@ -57,7 +59,8 @@
       </button>
 
       <a
-        href="#contact"
+        [routerLink]="home()"
+        fragment="contact"
         class="hidden rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition
                hover:bg-accent-600 motion-safe:hover:scale-[1.03] motion-safe:active:scale-[0.98]
                focus-visible:outline-none focus-visible:ring-2
@@ -84,9 +87,9 @@
   @if (mobileMenuOpen()) {
     <nav aria-label="Mobile" class="border-t border-border bg-surface px-4 py-4 sm:px-6 md:hidden">
       <ul class="space-y-3">
-        @for (link of navLinks; track link.href) {
+        @for (link of navLinks; track link.fragment) {
           <li>
-            <a [href]="link.href" class="block text-sm text-foreground" (click)="closeMobileMenu()">
+            <a [routerLink]="home()" [fragment]="link.fragment" class="block text-sm text-foreground" (click)="closeMobileMenu()">
               {{ t().nav[link.key] }}
             </a>
           </li>
@@ -94,7 +97,8 @@
       </ul>
 
       <a
-        href="#contact"
+        [routerLink]="home()"
+        fragment="contact"
         class="mt-4 flex items-center justify-center rounded-lg bg-accent-500 px-4 py-2 text-sm
                font-medium text-white transition hover:bg-accent-600
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500

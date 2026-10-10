@@ -10,12 +10,23 @@ public class SiteCaseStudyConfiguration : IEntityTypeConfiguration<SiteCaseStudy
     {
         builder.ToTable("SiteCaseStudies");
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Slug).IsRequired().HasMaxLength(100);
         builder.Property(x => x.TitleEn).IsRequired().HasMaxLength(300);
         builder.Property(x => x.TitleRu).IsRequired().HasMaxLength(300);
         builder.Property(x => x.TaskEn).IsRequired().HasMaxLength(1000);
         builder.Property(x => x.TaskRu).IsRequired().HasMaxLength(1000);
         builder.Property(x => x.SolutionEn).IsRequired().HasMaxLength(1000);
         builder.Property(x => x.SolutionRu).IsRequired().HasMaxLength(1000);
+        builder.Property(x => x.BodyEn).IsRequired();
+        builder.Property(x => x.BodyRu).IsRequired();
+        builder.Property(x => x.Url).HasMaxLength(500);
+
+        builder.Property(x => x.Stack)
+            .HasConversion(JsonListConversion.Converter<string>())
+            .Metadata.SetValueComparer(JsonListConversion.Comparer<string>());
+        builder.Property(x => x.ServiceSlugs)
+            .HasConversion(JsonListConversion.Converter<string>())
+            .Metadata.SetValueComparer(JsonListConversion.Comparer<string>());
 
         builder.Property(x => x.Results)
             .HasConversion(JsonListConversion.Converter<CaseStudyResultValue>())

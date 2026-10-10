@@ -21,6 +21,11 @@ function textToResults(text: string): CaseStudyResultAdmin[] {
     });
 }
 
+// Stack and service slugs are short tags — one comma-separated input each.
+function commaList(text: string): string[] {
+  return text.split(',').map((part) => part.trim()).filter((part) => part.length > 0);
+}
+
 @Component({
   selector: 'app-dashboard-cases',
   imports: [ReactiveFormsModule],
@@ -37,12 +42,18 @@ export class DashboardCases implements OnInit {
   protected readonly saving = signal(false);
 
   protected readonly form = this.fb.group({
+    slug: this.fb.control(''),
     titleEn: this.fb.control('', Validators.required),
     titleRu: this.fb.control('', Validators.required),
     taskEn: this.fb.control('', Validators.required),
     taskRu: this.fb.control('', Validators.required),
     solutionEn: this.fb.control('', Validators.required),
     solutionRu: this.fb.control('', Validators.required),
+    bodyEn: this.fb.control(''),
+    bodyRu: this.fb.control(''),
+    stack: this.fb.control(''),
+    serviceSlugs: this.fb.control(''),
+    url: this.fb.control(''),
     results: this.fb.control(''),
     sortOrder: this.fb.control(1, Validators.required),
   });
@@ -58,14 +69,21 @@ export class DashboardCases implements OnInit {
   startAdd(): void {
     this.editingId.set(EMPTY_ADMIN_ID);
     this.form.reset({
-      titleEn: '', titleRu: '', taskEn: '', taskRu: '', solutionEn: '', solutionRu: '',
+      slug: '', titleEn: '', titleRu: '', taskEn: '', taskRu: '', solutionEn: '', solutionRu: '',
+      bodyEn: '', bodyRu: '', stack: '', serviceSlugs: '', url: '',
       results: '', sortOrder: this.items().length + 1,
     });
   }
 
   startEdit(item: CaseStudyAdmin): void {
     this.editingId.set(item.id);
-    this.form.reset({ ...item, results: resultsToText(item.results) });
+    this.form.reset({
+      ...item,
+      stack: item.stack.join(', '),
+      serviceSlugs: item.serviceSlugs.join(', '),
+      url: item.url ?? '',
+      results: resultsToText(item.results),
+    });
   }
 
   cancel(): void {
@@ -83,7 +101,14 @@ export class DashboardCases implements OnInit {
 
     this.saving.set(true);
     const raw = this.form.getRawValue();
-    const value: CaseStudyAdmin = { id, ...raw, results: textToResults(raw.results) };
+    const value: CaseStudyAdmin = {
+      id,
+      ...raw,
+      stack: commaList(raw.stack),
+      serviceSlugs: commaList(raw.serviceSlugs),
+      url: raw.url.trim() || null,
+      results: textToResults(raw.results),
+    };
     const request = id === EMPTY_ADMIN_ID ? this.api.create(value) : this.api.update(value);
 
     request.subscribe(() => {

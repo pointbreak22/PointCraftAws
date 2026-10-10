@@ -1,14 +1,17 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { Icon } from '../icon/icon';
 import { LOCALE_OPTIONS } from '../../shared/locale-options';
-import { Locale } from '../../interfaces/locale';
+import { localizePath, stripLocale } from '../../shared/locale-path';
 import { LocaleStore } from '../../stores/locale.store';
 import { ThemeStore } from '../../stores/theme.store';
 
 @Component({
   selector: 'app-site-header',
-  imports: [Icon, NgOptimizedImage],
+  imports: [Icon, NgOptimizedImage, RouterLink],
   templateUrl: './site-header.html',
   styleUrl: './site-header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,26 +19,37 @@ import { ThemeStore } from '../../stores/theme.store';
 export class SiteHeader {
   private readonly themeStore = inject(ThemeStore);
   private readonly localeStore = inject(LocaleStore);
+  private readonly router = inject(Router);
 
   protected readonly theme = this.themeStore.theme;
   protected readonly locale = this.localeStore.locale;
   protected readonly t = this.localeStore.t;
-  protected readonly localeOptions = LOCALE_OPTIONS;
+  protected readonly home = this.localeStore.home;
   protected readonly mobileMenuOpen = signal(false);
 
+  private readonly url = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.router.url),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  // Each language option links to the same page in the other locale.
+  protected readonly localeLinks = computed(() => {
+    const path = stripLocale(this.url());
+    return LOCALE_OPTIONS.map((option) => ({ ...option, href: localizePath(path, option.id) }));
+  });
+
   protected readonly navLinks = [
-    { href: '#services', key: 'services' as const },
-    { href: '#stack', key: 'stack' as const },
-    { href: '#process', key: 'process' as const },
-    { href: '#cases', key: 'cases' as const },
+    { fragment: 'services', key: 'services' as const },
+    { fragment: 'stack', key: 'stack' as const },
+    { fragment: 'cases', key: 'cases' as const },
+    { fragment: 'faq', key: 'faq' as const },
   ];
 
   toggleTheme(): void {
     this.themeStore.setTheme(this.theme() === 'dark' ? 'light' : 'dark');
-  }
-
-  setLocale(locale: Locale): void {
-    this.localeStore.setLocale(locale);
   }
 
   toggleMobileMenu(): void {

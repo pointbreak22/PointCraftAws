@@ -1,12 +1,17 @@
 import { Routes } from '@angular/router';
 import { Landing } from './pages/landing/landing';
 import { authGuard } from './core/auth/auth.guard';
+import { localeGuard } from './core/i18n/locale.guard';
 
-// Landing is eager (it's the entry point every visitor hits first); everything
-// behind it loads on demand so a landing-only visit doesn't download the rest
-// of the app.
-export const routes: Routes = [
+// Public pages, mounted twice below: Russian at the root, English under /en. Landing is eager
+// (it's the entry point every visitor hits first); everything else loads on demand.
+const publicPages: Routes = [
   { path: '', component: Landing },
+  { path: 'services/:slug', loadComponent: () => import('./pages/service-page/service-page').then((m) => m.ServicePage) },
+  { path: 'projects/:slug', loadComponent: () => import('./pages/project-page/project-page').then((m) => m.ProjectPage) },
+];
+
+export const routes: Routes = [
   { path: 'login', loadComponent: () => import('./pages/login/login').then((m) => m.Login) },
   {
     path: 'dashboard',
@@ -22,5 +27,7 @@ export const routes: Routes = [
       { path: 'trust-points', loadComponent: () => import('./pages/dashboard-trust-points/dashboard-trust-points').then((m) => m.DashboardTrustPoints) },
     ],
   },
+  { path: 'en', canActivate: [localeGuard('en')], children: publicPages },
+  { path: '', canActivate: [localeGuard('ru')], children: publicPages },
   { path: '**', redirectTo: '' },
 ];

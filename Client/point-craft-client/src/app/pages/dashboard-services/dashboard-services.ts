@@ -26,6 +26,7 @@ export class DashboardServices implements OnInit {
   protected readonly saving = signal(false);
 
   protected readonly form = this.fb.group({
+    slug: this.fb.control(''),
     icon: this.fb.control('', Validators.required),
     titleEn: this.fb.control('', Validators.required),
     titleRu: this.fb.control('', Validators.required),
@@ -35,6 +36,8 @@ export class DashboardServices implements OnInit {
     featuresRu: this.fb.control(''),
     audienceEn: this.fb.control('', Validators.required),
     audienceRu: this.fb.control('', Validators.required),
+    bodyEn: this.fb.control(''),
+    bodyRu: this.fb.control(''),
     sortOrder: this.fb.control(1, Validators.required),
   });
 
@@ -49,8 +52,8 @@ export class DashboardServices implements OnInit {
   startAdd(): void {
     this.editingId.set(EMPTY_ADMIN_ID);
     this.form.reset({
-      icon: '', titleEn: '', titleRu: '', descriptionEn: '', descriptionRu: '',
-      featuresEn: '', featuresRu: '', audienceEn: '', audienceRu: '',
+      slug: '', icon: '', titleEn: '', titleRu: '', descriptionEn: '', descriptionRu: '',
+      featuresEn: '', featuresRu: '', audienceEn: '', audienceRu: '', bodyEn: '', bodyRu: '',
       sortOrder: this.items().length + 1,
     });
   }

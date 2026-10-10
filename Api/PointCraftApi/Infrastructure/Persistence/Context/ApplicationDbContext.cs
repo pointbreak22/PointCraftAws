@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<SiteTechStackArea> SiteTechStackAreas => Set<SiteTechStackArea>();
     public DbSet<SiteProcessStep> SiteProcessSteps => Set<SiteProcessStep>();
     public DbSet<SiteCaseStudy> SiteCaseStudies => Set<SiteCaseStudy>();
+    public DbSet<AppliedContentRevision> AppliedContentRevisions => Set<AppliedContentRevision>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

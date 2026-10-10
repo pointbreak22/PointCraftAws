@@ -9,24 +9,52 @@
       <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
         @for (item of contentStore.caseStudies(); track item.id; let i = $index) {
           <article
-            [appRevealOnScroll]="i * 100"
-            class="rounded-2xl border border-border bg-surface p-6 transition
+            [appRevealOnScroll]="(i % 2) * 100"
+            class="group relative flex flex-col rounded-2xl border border-border bg-surface p-6 transition
                    hover:-translate-y-1 hover:border-accent-500/40 hover:shadow-xl hover:shadow-accent-500/5"
           >
-            <h3 class="text-lg font-semibold text-foreground">{{ item.title }}</h3>
+            <h3 class="text-lg font-semibold text-foreground">
+              <a
+                [routerLink]="prefix() + '/projects/' + item.slug"
+                class="rounded after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none
+                       focus-visible:after:ring-2 focus-visible:after:ring-accent-500"
+              >
+                {{ item.title }}
+              </a>
+            </h3>
             <p class="mt-2 text-sm text-muted-foreground">
               <strong class="text-foreground">{{ t().cases.taskLabel }}</strong> {{ item.task }}
             </p>
-            <p class="mt-2 text-sm text-muted-foreground">
+            <p class="mt-2 flex-1 text-sm text-muted-foreground">
               <strong class="text-foreground">{{ t().cases.solutionLabel }}</strong> {{ item.solution }}
             </p>
-            <div class="mt-4 flex flex-wrap gap-4 border-t border-border pt-4">
-              @for (result of item.results; track result.label) {
-                <div>
-                  <p class="text-lg font-semibold text-accent-500">{{ result.value }}</p>
-                  <p class="text-xs text-faint-foreground">{{ result.label }}</p>
-                </div>
-              }
+
+            @if (item.stack.length) {
+              <ul class="mt-4 flex flex-wrap gap-1.5">
+                @for (tech of item.stack.slice(0, 6); track tech) {
+                  <li class="rounded-md border border-border bg-surface-alt px-2 py-0.5 text-xs text-muted-foreground">
+                    {{ tech }}
+                  </li>
+                }
+              </ul>
+            }
+
+            <div class="mt-4 flex flex-wrap items-end justify-between gap-4 border-t border-border pt-4">
+              <div class="flex flex-wrap gap-5">
+                @for (result of item.results; track result.label) {
+                  <div>
+                    <p class="text-lg font-semibold text-accent-500">{{ result.value }}</p>
+                    <p class="text-xs text-faint-foreground">{{ result.label }}</p>
+                  </div>
+                }
+              </div>
+              <span
+                aria-hidden="true"
+                class="flex items-center gap-1 text-sm font-medium text-accent-500 transition group-hover:gap-2"
+              >
+                {{ t().cases.more }}
+                <svg appIcon="arrow-right" class="h-4 w-4"></svg>
+              </span>
             </div>
           </article>
         }

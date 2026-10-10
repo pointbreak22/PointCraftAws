@@ -43,6 +43,11 @@
     (ngSubmit)="save()"
     novalidate
   >
+    <div class="col-span-2">
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Slug — page address /services/&#123;slug&#125; (blank = from English title)</label>
+      <input type="text" formControlName="slug" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
     <div>
       <label class="mb-1.5 block text-sm font-medium text-foreground">Icon (sprite id)</label>
       <input type="text" formControlName="icon" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
@@ -91,6 +96,16 @@
     <div>
       <label class="mb-1.5 block text-sm font-medium text-foreground">Audience (RU)</label>
       <input type="text" formControlName="audienceRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Page text (EN, blank line between paragraphs)</label>
+      <textarea rows="8" formControlName="bodyEn" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Page text (RU, blank line between paragraphs)</label>
+      <textarea rows="8" formControlName="bodyRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
     </div>
 
     <div class="col-span-2 flex gap-3">

@@ -5,11 +5,23 @@ export interface TrustPoint {
 
 export interface ServiceCategory {
   id: string;
+  slug: string;
   icon: string;
   title: string;
   description: string;
   features: string[];
   audience: string;
+}
+
+export interface ServiceLink {
+  slug: string;
+  title: string;
+}
+
+export interface ServiceDetail {
+  service: ServiceCategory;
+  body: string;
+  relatedProjects: CaseStudy[];
 }
 
 export interface TechStackArea {
@@ -33,10 +45,19 @@ export interface CaseStudyResult {
 
 export interface CaseStudy {
   id: string;
+  slug: string;
   title: string;
   task: string;
   solution: string;
+  stack: string[];
+  url: string | null;
   results: CaseStudyResult[];
+}
+
+export interface CaseStudyDetail {
+  caseStudy: CaseStudy;
+  body: string;
+  services: ServiceLink[];
 }
 
 export interface ContactRequest {

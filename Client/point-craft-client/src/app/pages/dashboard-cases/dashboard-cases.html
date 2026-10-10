@@ -47,6 +47,11 @@
     (ngSubmit)="save()"
     novalidate
   >
+    <div class="col-span-2">
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Slug — page address /projects/&#123;slug&#125; (blank = from English title)</label>
+      <input type="text" formControlName="slug" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
     <div>
       <label class="mb-1.5 block text-sm font-medium text-foreground">Title (EN)</label>
       <input type="text" formControlName="titleEn" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
@@ -75,6 +80,31 @@
     <div>
       <label class="mb-1.5 block text-sm font-medium text-foreground">Solution (RU)</label>
       <textarea rows="2" formControlName="solutionRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Architecture write-up (EN, blank line between paragraphs)</label>
+      <textarea rows="8" formControlName="bodyEn" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Architecture write-up (RU, blank line between paragraphs)</label>
+      <textarea rows="8" formControlName="bodyRu" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground"></textarea>
+    </div>
+
+    <div class="col-span-2">
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Stack (comma-separated)</label>
+      <input type="text" formControlName="stack" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Related service slugs (comma-separated)</label>
+      <input type="text" formControlName="serviceSlugs" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
+    </div>
+
+    <div>
+      <label class="mb-1.5 block text-sm font-medium text-foreground">Public link (demo or repo, optional)</label>
+      <input type="url" formControlName="url" class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground" />
     </div>
 
     <div class="col-span-2">

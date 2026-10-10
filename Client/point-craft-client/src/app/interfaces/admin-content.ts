@@ -12,6 +12,7 @@ export interface TrustPointAdmin {
 
 export interface ServiceAdmin {
   id: string;
+  slug: string;
   icon: string;
   titleEn: string;
   titleRu: string;
@@ -21,6 +22,8 @@ export interface ServiceAdmin {
   featuresRu: string[];
   audienceEn: string;
   audienceRu: string;
+  bodyEn: string;
+  bodyRu: string;
   sortOrder: number;
 }
 
@@ -52,12 +55,18 @@ export interface CaseStudyResultAdmin {
 
 export interface CaseStudyAdmin {
   id: string;
+  slug: string;
   titleEn: string;
   titleRu: string;
   taskEn: string;
   taskRu: string;
   solutionEn: string;
   solutionRu: string;
+  bodyEn: string;
+  bodyRu: string;
+  stack: string[];
+  serviceSlugs: string[];
+  url: string | null;
   results: CaseStudyResultAdmin[];
   sortOrder: number;
 }

@@ -9,7 +9,9 @@ public class EfContentRepository<T>(ApplicationDbContext db) : IContentRepositor
 {
     public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await db.Set<T>().OrderBy(x => x.SortOrder).ToListAsync(cancellationToken);
+        // No tracking: callers only read this list (the admin controllers also use it to check slug
+        // uniqueness right before Update — a tracked copy would make Update throw on the duplicate key).
+        return await db.Set<T>().AsNoTracking().OrderBy(x => x.SortOrder).ToListAsync(cancellationToken);
     }
 
     public Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)

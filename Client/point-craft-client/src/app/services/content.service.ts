@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
   CaseStudy,
+  CaseStudyDetail,
   ProcessStep,
   ServiceCategory,
+  ServiceDetail,
   TechStackArea,
   TrustPoint,
 } from '../interfaces/content';
@@ -24,6 +26,20 @@ export class ContentService {
 
   getServiceCategories(locale: Locale): Observable<ServiceCategory[]> {
     return this.http.get<ServiceCategory[]>(`${environment.apiBaseUrl}/api/content/services`, this.params(locale));
+  }
+
+  getServiceDetail(slug: string, locale: Locale): Observable<ServiceDetail> {
+    return this.http.get<ServiceDetail>(
+      `${environment.apiBaseUrl}/api/content/services/${encodeURIComponent(slug)}`,
+      this.params(locale),
+    );
+  }
+
+  getCaseStudyDetail(slug: string, locale: Locale): Observable<CaseStudyDetail> {
+    return this.http.get<CaseStudyDetail>(
+      `${environment.apiBaseUrl}/api/content/case-studies/${encodeURIComponent(slug)}`,
+      this.params(locale),
+    );
   }
 
   getTechStack(locale: Locale): Observable<TechStackArea[]> {

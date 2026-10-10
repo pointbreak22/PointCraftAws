@@ -17,6 +17,19 @@ namespace Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
 
+            modelBuilder.Entity("Domain.Entities.AppliedContentRevision", b =>
+                {
+                    b.Property<int>("Revision")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AppliedAtUtc")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Revision");
+
+                    b.ToTable("AppliedContentRevisions", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.ContactRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -56,8 +69,25 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BodyEn")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BodyRu")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Results")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServiceSlugs")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SolutionEn")
@@ -72,6 +102,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Stack")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TaskEn")
                         .IsRequired()
@@ -91,6 +125,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("TitleRu")
                         .IsRequired()
                         .HasMaxLength(300)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -148,6 +186,14 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BodyEn")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BodyRu")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DescriptionEn")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -169,6 +215,11 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SortOrder")

@@ -1,0 +1,160 @@
+<app-site-header />
+
+<main class="bg-background">
+  @switch (detail()) {
+    @case (undefined) {
+      <p class="mx-auto max-w-4xl px-4 py-32 text-center text-sm text-muted-foreground sm:px-6" role="status">
+        {{ t().detail.loading }}
+      </p>
+    }
+    @case (null) {
+      <div class="mx-auto max-w-xl px-4 py-32 text-center sm:px-6">
+        <h1 class="text-2xl font-semibold text-foreground">{{ t().detail.notFoundTitle }}</h1>
+        <p class="mt-3 text-muted-foreground">{{ t().detail.notFoundText }}</p>
+        <a [routerLink]="home()" class="mt-6 inline-flex rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white hover:bg-accent-600">
+          {{ t().detail.backHome }}
+        </a>
+      </div>
+    }
+    @default {
+      @let d = detail()!;
+      <article>
+        <header class="relative overflow-hidden border-b border-border px-4 pb-14 pt-10 sm:px-6">
+          <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 flex justify-center overflow-hidden">
+            <div class="mt-4 h-64 w-64 rounded-full bg-gradient-to-br from-accent-500/25 to-accent2-500/25 blur-3xl"></div>
+          </div>
+
+          <div class="mx-auto max-w-4xl">
+            <nav aria-label="Breadcrumb">
+              <ol class="flex flex-wrap items-center gap-1.5 text-xs text-faint-foreground">
+                <li><a [routerLink]="home()" class="hover:text-foreground">{{ t().nav.home }}</a></li>
+                <li aria-hidden="true">/</li>
+                <li><a [routerLink]="home()" fragment="cases" class="hover:text-foreground">{{ t().detail.projectsCrumb }}</a></li>
+                <li aria-hidden="true">/</li>
+                <li aria-current="page" class="text-muted-foreground">{{ d.caseStudy.title }}</li>
+              </ol>
+            </nav>
+
+            <h1 class="mt-8 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{{ d.caseStudy.title }}</h1>
+
+            @if (d.caseStudy.results.length) {
+              <dl class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+                @for (result of d.caseStudy.results; track result.label) {
+                  <!-- dt must come first in the markup; flex-col-reverse shows the value on top. -->
+                  <div class="flex flex-col-reverse">
+                    <dt class="text-xs text-faint-foreground">{{ result.label }}</dt>
+                    <dd class="text-2xl font-semibold text-accent-500">{{ result.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+
+            @if (d.caseStudy.url) {
+              <a
+                [href]="d.caseStudy.url"
+                target="_blank"
+                rel="noopener"
+                class="mt-8 inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground
+                       transition hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
+              >
+                {{ t().detail.viewProject }}
+                <svg appIcon="external-link" class="h-4 w-4"></svg>
+              </a>
+            }
+          </div>
+        </header>
+
+        <div class="mx-auto grid max-w-4xl grid-cols-1 gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_18rem]">
+          <div>
+            <section>
+              <h2 class="text-xl font-semibold text-foreground">{{ t().detail.task }}</h2>
+              <p class="mt-3 leading-relaxed text-muted-foreground">{{ d.caseStudy.task }}</p>
+            </section>
+            <section class="mt-10">
+              <h2 class="text-xl font-semibold text-foreground">{{ t().detail.solution }}</h2>
+              <p class="mt-3 leading-relaxed text-muted-foreground">{{ d.caseStudy.solution }}</p>
+            </section>
+            @if (paragraphs().length) {
+              <section class="mt-10">
+                <h2 class="text-xl font-semibold text-foreground">{{ t().detail.architecture }}</h2>
+                <div class="mt-3 space-y-4 leading-relaxed text-muted-foreground">
+                  @for (paragraph of paragraphs(); track $index) {
+                    <p>{{ paragraph }}</p>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+
+          <aside class="space-y-6">
+            @if (d.caseStudy.stack.length) {
+              <section class="rounded-2xl border border-border bg-surface p-5">
+                <h2 class="text-sm font-semibold text-foreground">{{ t().detail.stack }}</h2>
+                <ul class="mt-3 flex flex-wrap gap-1.5">
+                  @for (tech of d.caseStudy.stack; track tech) {
+                    <li class="rounded-md border border-border bg-surface-alt px-2 py-0.5 text-xs text-muted-foreground">{{ tech }}</li>
+                  }
+                </ul>
+              </section>
+            }
+            @if (d.services.length) {
+              <nav class="rounded-2xl border border-border bg-surface p-5" [attr.aria-label]="t().detail.relatedServices">
+                <h2 class="text-sm font-semibold text-foreground">{{ t().detail.relatedServices }}</h2>
+                <ul class="mt-3 space-y-2">
+                  @for (service of d.services; track service.slug) {
+                    <li>
+                      <a
+                        [routerLink]="prefix() + '/services/' + service.slug"
+                        class="flex items-start gap-1.5 rounded text-sm text-accent-500 hover:underline focus-visible:outline-none
+                               focus-visible:ring-2 focus-visible:ring-accent-500"
+                      >
+                        <svg appIcon="arrow-right" class="mt-0.5 h-4 w-4 shrink-0"></svg>
+                        {{ service.title }}
+                      </a>
+                    </li>
+                  }
+                </ul>
+              </nav>
+            }
+          </aside>
+        </div>
+      </article>
+
+      <section class="border-t border-border bg-surface-alt px-4 py-14 sm:px-6">
+        <div class="mx-auto max-w-4xl rounded-2xl border border-border bg-surface p-8 text-center">
+          <h2 class="text-2xl font-semibold text-foreground">{{ t().detail.ctaHeading }}</h2>
+          <p class="mt-2 text-muted-foreground">{{ t().detail.ctaText }}</p>
+          <a
+            [routerLink]="home()"
+            fragment="contact"
+            class="mt-6 inline-flex rounded-lg bg-accent-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-accent-600
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          >
+            {{ t().detail.ctaButton }}
+          </a>
+        </div>
+
+        @if (otherProjects().length) {
+          <nav class="mx-auto mt-12 max-w-4xl" [attr.aria-label]="t().detail.otherProjects">
+            <h2 class="text-lg font-semibold text-foreground">{{ t().detail.otherProjects }}</h2>
+            <ul class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              @for (other of otherProjects(); track other.id) {
+                <li>
+                  <a
+                    [routerLink]="prefix() + '/projects/' + other.slug"
+                    class="block rounded-xl border border-border bg-surface px-4 py-3 text-sm text-foreground transition
+                           hover:border-accent-500/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500"
+                  >
+                    {{ other.title }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </nav>
+        }
+      </section>
+    }
+  }
+</main>
+
+<app-site-footer />

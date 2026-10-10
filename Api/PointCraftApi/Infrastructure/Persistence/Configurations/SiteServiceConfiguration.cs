@@ -10,6 +10,7 @@ public class SiteServiceConfiguration : IEntityTypeConfiguration<SiteService>
     {
         builder.ToTable("SiteServices");
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Slug).IsRequired().HasMaxLength(100);
         builder.Property(x => x.Icon).IsRequired().HasMaxLength(50);
         builder.Property(x => x.TitleEn).IsRequired().HasMaxLength(300);
         builder.Property(x => x.TitleRu).IsRequired().HasMaxLength(300);
@@ -17,6 +18,8 @@ public class SiteServiceConfiguration : IEntityTypeConfiguration<SiteService>
         builder.Property(x => x.DescriptionRu).IsRequired().HasMaxLength(1000);
         builder.Property(x => x.AudienceEn).IsRequired().HasMaxLength(300);
         builder.Property(x => x.AudienceRu).IsRequired().HasMaxLength(300);
+        builder.Property(x => x.BodyEn).IsRequired();
+        builder.Property(x => x.BodyRu).IsRequired();
 
         builder.Property(x => x.FeaturesEn)
             .HasConversion(JsonListConversion.Converter<string>())
