@@ -1,0 +1,15 @@
+{
+  "name": "Ultima PointBreak Lab",
+  "short_name": "PointBreak Lab",
+  "description": "Разработка веб-сервисов, маркетплейсов, real-time и десктоп-приложений на .NET и Angular.",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "ru",
+  "display": "browser",
+  "background_color": "#08090d",
+  "theme_color": "#08090d",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

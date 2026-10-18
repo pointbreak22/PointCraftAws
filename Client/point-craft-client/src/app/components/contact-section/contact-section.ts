@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { Icon } from '../icon/icon';
 import { ContactService } from '../../services/contact.service';
 import { ContentStore } from '../../stores/content.store';
@@ -16,6 +17,7 @@ import { RevealOnScroll } from '../../shared/reveal-on-scroll.directive';
 export class ContactSection {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly contactService = inject(ContactService);
+  private readonly analytics = inject(AnalyticsService);
   protected readonly contentStore = inject(ContentStore);
   protected readonly t = inject(LocaleStore).t;
 
@@ -42,6 +44,7 @@ export class ContactSection {
     this.contactService.send(this.form.getRawValue()).subscribe(() => {
       this.submitting.set(false);
       this.submitted.set(true);
+      this.analytics.reachGoal('contact_form_submit');
       this.form.reset();
     });
   }

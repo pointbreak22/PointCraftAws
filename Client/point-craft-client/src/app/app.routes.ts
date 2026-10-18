@@ -9,6 +9,7 @@ const publicPages: Routes = [
   { path: '', component: Landing },
   { path: 'services/:slug', loadComponent: () => import('./pages/service-page/service-page').then((m) => m.ServicePage) },
   { path: 'projects/:slug', loadComponent: () => import('./pages/project-page/project-page').then((m) => m.ProjectPage) },
+  { path: '**', loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound) },
 ];
 
 export const routes: Routes = [
@@ -28,6 +29,6 @@ export const routes: Routes = [
     ],
   },
   { path: 'en', canActivate: [localeGuard('en')], children: publicPages },
+  // Unknown URLs fall through to publicPages' '**' (NotFound, HTTP 404) in the matching locale.
   { path: '', canActivate: [localeGuard('ru')], children: publicPages },
-  { path: '**', redirectTo: '' },
 ];
