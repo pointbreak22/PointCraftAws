@@ -11,6 +11,7 @@ import { LocaleStore } from '../../stores/locale.store';
   selector: 'app-not-found',
   imports: [SiteHeader, SiteFooter, RouterLink],
   templateUrl: './not-found.html',
+  styleUrl: './not-found.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFound {

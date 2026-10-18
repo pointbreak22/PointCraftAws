@@ -12,6 +12,8 @@ export interface SeoData {
   /** Locale-independent path of the page, e.g. '/' or '/services/web-services'. */
   path: string;
   type?: 'website' | 'article';
+  /** Search phrases for <meta name="keywords"> (Yandex still reads it) and JSON-LD. */
+  keywords?: string[];
   /** Page-specific schema.org nodes, merged into one @graph with the organization node. */
   jsonLd?: object[];
   noindex?: boolean;
@@ -37,6 +39,8 @@ export class SeoService {
     this.title.setTitle(data.title);
     this.meta.updateTag({ name: 'description', content: data.description });
     this.meta.updateTag({ name: 'robots', content: data.noindex ? 'noindex, follow' : 'index, follow' });
+    if (data.keywords?.length) this.meta.updateTag({ name: 'keywords', content: data.keywords.join(', ') });
+    else this.meta.removeTag('name="keywords"');
 
     this.meta.updateTag({ property: 'og:type', content: data.type ?? 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });

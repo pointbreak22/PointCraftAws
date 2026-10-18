@@ -4,6 +4,7 @@ import { Icon } from '../../components/icon/icon';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { SiteHeader } from '../../components/site-header/site-header';
 import { SeoService } from '../../core/seo/seo.service';
+import { projectPageSeo, snippet } from '../../core/seo/page-seo';
 import { ORGANIZATION_ID, SITE_URL } from '../../core/seo/site';
 import { breadcrumbJsonLd } from '../../core/seo/structured-data';
 import { localizePath } from '../../shared/locale-path';
@@ -54,9 +55,11 @@ export class ProjectPage {
       const { caseStudy } = detail;
       const locale = this.localeStore.locale();
       const path = `/projects/${caseStudy.slug}`;
+      const pageSeo = projectPageSeo(caseStudy.slug, locale);
       this.seo.update({
-        title: `${caseStudy.title} — ${t.seo.projectTitleSuffix}`,
-        description: caseStudy.task,
+        title: pageSeo ? `${pageSeo.title} | ${t.seo.serviceTitleSuffix}` : `${caseStudy.title} — ${t.seo.projectTitleSuffix}`,
+        description: pageSeo?.description ?? snippet(caseStudy.task),
+        keywords: [...(pageSeo?.keywords ?? []), ...caseStudy.stack],
         path,
         type: 'article',
         jsonLd: [
@@ -68,7 +71,7 @@ export class ProjectPage {
             description: caseStudy.solution,
             url: SITE_URL + localizePath(path, locale),
             inLanguage: locale,
-            keywords: caseStudy.stack.join(', '),
+            keywords: [...(pageSeo?.keywords ?? []), ...caseStudy.stack].join(', '),
             creator: { '@id': ORGANIZATION_ID },
             ...(caseStudy.url ? { sameAs: caseStudy.url } : {}),
             about: detail.services.map((service) => ({

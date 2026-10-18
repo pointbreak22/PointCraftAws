@@ -4,6 +4,7 @@ import { Icon } from '../../components/icon/icon';
 import { SiteFooter } from '../../components/site-footer/site-footer';
 import { SiteHeader } from '../../components/site-header/site-header';
 import { SeoService } from '../../core/seo/seo.service';
+import { servicePageSeo, snippet } from '../../core/seo/page-seo';
 import { ORGANIZATION_ID } from '../../core/seo/site';
 import { breadcrumbJsonLd } from '../../core/seo/structured-data';
 import { splitParagraphs } from '../../shared/paragraphs';
@@ -53,9 +54,11 @@ export class ServicePage {
 
       const { service } = detail;
       const path = `/services/${service.slug}`;
+      const pageSeo = servicePageSeo(service.slug, this.localeStore.locale());
       this.seo.update({
-        title: `${service.title} — ${t.seo.serviceTitleSuffix}`,
-        description: service.description,
+        title: `${pageSeo?.title ?? service.title} — ${t.seo.serviceTitleSuffix}`,
+        description: pageSeo?.description ?? snippet(service.description),
+        keywords: pageSeo?.keywords,
         path,
         jsonLd: [
           {
@@ -63,6 +66,7 @@ export class ServicePage {
             name: service.title,
             description: service.description,
             serviceType: service.title,
+            ...(pageSeo ? { alternateName: pageSeo.title, keywords: pageSeo.keywords.join(', ') } : {}),
             audience: { '@type': 'Audience', audienceType: service.audience },
             provider: { '@id': ORGANIZATION_ID },
             areaServed: 'Worldwide',
