@@ -106,14 +106,14 @@ export interface Translations {
 
 const en: Translations = {
   seo: {
-    homeTitle: 'Ultima PointBreak Lab — web services, marketplaces, real-time & desktop app development',
+    homeTitle: 'POINTBREAK22 Lab — web services, marketplaces, real-time & desktop app development',
     homeDescription:
-      'Ultima PointBreak Lab builds web services, SaaS, marketplaces, real-time apps with chat and video calls, ' +
+      'POINTBREAK22 Lab builds web services, SaaS, marketplaces, real-time apps with chat and video calls, ' +
       'and cross-platform desktop software on .NET and Angular — with SSR and SEO out of the box.',
     organizationDescription:
       'Development studio: web services, SaaS, marketplaces, real-time and desktop applications on .NET and Angular.',
-    serviceTitleSuffix: 'Ultima PointBreak Lab',
-    projectTitleSuffix: 'Ultima PointBreak Lab case study',
+    serviceTitleSuffix: 'POINTBREAK22 Lab',
+    projectTitleSuffix: 'POINTBREAK22 Lab case study',
   },
   nav: {
     services: 'Services',
@@ -131,7 +131,7 @@ const en: Translations = {
     switchToDark: 'Switch to dark theme',
   },
   hero: {
-    badge: 'Ultima PointBreak Lab · development studio',
+    badge: 'POINTBREAK22 Lab · development studio',
     title: 'Web services, marketplaces, and desktop apps for problems a template can’t solve',
     subtitle:
       'From SSR catalogs and SaaS dashboards to messengers with video calls and plugin-based desktop software. ' +
@@ -247,20 +247,20 @@ const en: Translations = {
     submitting: 'Sending…',
   },
   footer: {
-    tagline: 'Ultima PointBreak Lab. Web services, real-time and desktop apps.',
+    tagline: 'POINTBREAK22 Lab. Web services, real-time and desktop apps.',
   },
 };
 
 const ru: Translations = {
   seo: {
-    homeTitle: 'Ultima PointBreak Lab — разработка веб-сервисов, маркетплейсов, real-time и десктоп-приложений',
+    homeTitle: 'POINTBREAK22 Lab — разработка веб-сервисов, маркетплейсов, real-time и десктоп-приложений',
     homeDescription:
-      'Ultima PointBreak Lab разрабатывает веб-сервисы, SaaS, маркетплейсы, мессенджеры с видеозвонками и ' +
+      'POINTBREAK22 Lab разрабатывает веб-сервисы, SaaS, маркетплейсы, мессенджеры с видеозвонками и ' +
       'кроссплатформенные десктоп-приложения на .NET и Angular — с SSR и SEO из коробки.',
     organizationDescription:
       'Студия разработки: веб-сервисы, SaaS, маркетплейсы, real-time и десктоп-приложения на .NET и Angular.',
-    serviceTitleSuffix: 'Ultima PointBreak Lab',
-    projectTitleSuffix: 'кейс Ultima PointBreak Lab',
+    serviceTitleSuffix: 'POINTBREAK22 Lab',
+    projectTitleSuffix: 'кейс POINTBREAK22 Lab',
   },
   nav: {
     services: 'Услуги',
@@ -278,7 +278,7 @@ const ru: Translations = {
     switchToDark: 'Включить тёмную тему',
   },
   hero: {
-    badge: 'Ultima PointBreak Lab · студия разработки',
+    badge: 'POINTBREAK22 Lab · студия разработки',
     title: 'Веб-сервисы, маркетплейсы и десктоп-приложения для задач, которые не решить шаблоном',
     subtitle:
       'От SSR-каталогов и SaaS-кабинетов до мессенджеров с видеозвонками и десктоп-программ на плагинах. ' +
@@ -394,7 +394,7 @@ const ru: Translations = {
     submitting: 'Отправляем…',
   },
   footer: {
-    tagline: 'Ultima PointBreak Lab. Веб-сервисы, real-time и десктоп-приложения.',
+    tagline: 'POINTBREAK22 Lab. Веб-сервисы, real-time и десктоп-приложения.',
   },
 };
 

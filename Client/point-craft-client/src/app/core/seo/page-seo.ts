@@ -172,6 +172,18 @@ const PROJECTS: Record<string, Record<Locale, PageSeo>> = {
       keywords: ['browser automation', 'Playwright .NET', 'scraping case study', 'Hangfire task queues'],
     },
   },
+  'artstil-advertising-store': {
+    ru: {
+      title: 'Кейс: интернет-магазин АРТстиль на Next.js и NestJS с обменом с 1С',
+      description: 'Замена WordPress-сайта рекламного агентства собственным магазином: корзина и заказы, заявки на услуги, 3 языка, 4 валюты и обмен с 1С.',
+      keywords: ['интернет-магазин с 1С', 'интеграция сайта с 1С', 'переезд с WordPress', 'Next.js', 'NestJS', 'интернет-магазин кейс'],
+    },
+    en: {
+      title: 'Case study: ARTstil online store on Next.js & NestJS with 1C sync',
+      description: "Replacing an advertising agency's WordPress site with a custom store: cart and orders, service leads, 3 languages, 4 currencies and 1C sync.",
+      keywords: ['online store with 1C integration', 'WordPress migration', 'Next.js', 'NestJS', 'e-commerce case study'],
+    },
+  },
 };
 
 export function servicePageSeo(slug: string, locale: Locale): PageSeo | undefined {

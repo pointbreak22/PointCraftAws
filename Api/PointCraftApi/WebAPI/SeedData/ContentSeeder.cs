@@ -12,6 +12,7 @@ namespace WebAPI.SeedData;
 //   revision 2 — relaunch: new services/tech stack/trust points, the first real case studies,
 //                and slugs for every service and case study (they now have their own pages).
 //   revision 3 — Python (Django / Flask) and Java (Spring Boot) added to the Backend tech stack.
+//   revision 4 — the ARTstil case study, appended after the existing ones.
 //
 // A table is only rewritten when it's empty or still holds exactly the original seed (matched
 // by English title); anything the admin added or renamed is kept and just gets a slug.
@@ -19,6 +20,7 @@ public static partial class ContentSeeder
 {
     private const int RelaunchRevision = 2;
     private const int BackendLanguagesRevision = 3;
+    private const int ArtstilRevision = 4;
     private static readonly string[] BackendLanguages = ["Python (Django / Flask)", "Java (Spring Boot)"];
 
     // English titles of the content seeded before the relaunch (revision 1, never recorded as a
@@ -47,6 +49,28 @@ public static partial class ContentSeeder
             db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = BackendLanguagesRevision, AppliedAtUtc = DateTime.UtcNow });
             await db.SaveChangesAsync(cancellationToken);
         }
+
+        if (!applied.Contains(ArtstilRevision))
+        {
+            await AddArtstilCaseStudyAsync(db, logger, cancellationToken);
+            db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = ArtstilRevision, AppliedAtUtc = DateTime.UtcNow });
+            await db.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    // Goes after the admin's current case studies; skipped if the admin already made one with this slug.
+    private static async Task AddArtstilCaseStudyAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
+    {
+        if (await db.SiteCaseStudies.AnyAsync(x => x.Slug == ArtstilCaseStudy.Slug, cancellationToken))
+        {
+            logger.LogInformation("Content revision {Revision}: case study {Slug} already exists, kept as is.", ArtstilRevision, ArtstilCaseStudy.Slug);
+            return;
+        }
+
+        var caseStudy = ArtstilCaseStudy.Create();
+        caseStudy.Id = Guid.NewGuid();
+        caseStudy.SortOrder = (await db.SiteCaseStudies.MaxAsync(x => (int?)x.SortOrder, cancellationToken) ?? 0) + 1;
+        db.SiteCaseStudies.Add(caseStudy);
     }
 
     // Appends to whatever the Backend card holds now (the admin may have edited it) instead of
