@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ContentStore } from '../../stores/content.store';
 import { LocaleStore } from '../../stores/locale.store';
 import { RevealOnScroll } from '../../shared/reveal-on-scroll.directive';
+import { Spotlight } from '../../shared/spotlight.directive';
 
 @Component({
   selector: 'app-process-section',
-  imports: [RevealOnScroll],
+  imports: [RevealOnScroll, Spotlight],
   templateUrl: './process-section.html',
   styleUrl: './process-section.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

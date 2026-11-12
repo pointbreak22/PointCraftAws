@@ -4,7 +4,7 @@
       <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent-500">
         <span aria-hidden="true" class="font-mono text-faint-foreground">03</span>
         <span aria-hidden="true" class="h-px w-6 bg-accent-500/50"></span>
-        {{ t().nav.stack }}
+        <span class="text-gradient-animated">{{ t().nav.stack }}</span>
       </p>
       <h2 class="mt-4 text-3xl font-bold text-foreground sm:text-4xl">{{ t().stack.heading }}</h2>
       <p class="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{{ t().stack.subheading }}</p>
@@ -14,6 +14,7 @@
       @for (area of contentStore.techStack(); track area.id; let i = $index) {
         <div
           [appRevealOnScroll]="i * 80"
+          appSpotlight
           class="relative rounded-2xl border border-border bg-surface p-6 transition duration-300
                  card-glow motion-safe:hover:-translate-y-1 hover:border-transparent hover:shadow-2xl hover:shadow-accent-500/10"
         >
