@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/manrope";
 
 @theme {
+  /* typography: Inter for body text, Manrope for headings (both cover Cyrillic) */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Manrope Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
   /* surfaces — depth hierarchy, darkest to lightest */
   --color-background: #08090d;
   --color-surface: #0c0e13;
@@ -67,4 +73,229 @@
   transition:
     opacity 0.6s ease-out,
     transform 0.6s ease-out;
+}
+
+/* ---------- Base polish ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  body {
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Anchored sections land below the sticky header instead of under it. */
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-accent-500) 35%, transparent);
+    color: var(--color-foreground);
+  }
+}
+
+/* ---------- Decorative utilities ---------- */
+
+/* Faint engineering grid that fades out towards the edges (hero, page headers). */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
+}
+
+/* Hero variant: grid visible near the edges, faded out behind the centred text. */
+.bg-grid-edges {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-foreground) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-foreground) 5%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 40%, transparent 35%, #000 85%);
+}
+
+/* Gradient hairline border that lights up on hover; put on a card with `relative`. */
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-accent-500) 70%, transparent),
+    transparent 40%,
+    transparent 60%,
+    color-mix(in oklab, var(--color-accent2-500) 60%, transparent)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card-glow:hover::before,
+.card-glow:focus-within::before {
+  opacity: 1;
+}
+
+.text-gradient {
+  background-image: linear-gradient(90deg, var(--color-accent-400), var(--color-accent2-400));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Motion effects (all disabled under prefers-reduced-motion) ---------- */
+
+/* Slowly drifting aurora blobs behind the hero. */
+@keyframes aurora-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(3rem, 2rem) scale(1.1); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-3rem, 3rem) scale(1.12); }
+}
+@keyframes aurora-c {
+  0%, 100% { transform: translate(0, 0); opacity: 0.6; }
+  50% { transform: translate(-2rem, -2rem); opacity: 1; }
+}
+.aurora-a { animation: aurora-a 18s ease-in-out infinite; }
+.aurora-b { animation: aurora-b 22s ease-in-out infinite; }
+.aurora-c { animation: aurora-c 16s ease-in-out infinite; }
+
+/* Light sweep across the primary call-to-action. */
+@keyframes shine {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  60%, 100% { transform: translateX(320%) skewX(-20deg); }
+}
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  animation: shine 4.5s ease-in-out infinite 1.5s;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Animated gradient text (eyebrows, accent words). */
+@keyframes gradient-pan {
+  to { background-position: 200% center; }
+}
+.text-gradient-animated {
+  background-image: linear-gradient(90deg, var(--color-accent-400), var(--color-accent2-400), #a78bfa, var(--color-accent-400));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s linear infinite;
+}
+
+/* Infinite marquee: the track holds the list twice and scrolls by half its width. */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* Cursor spotlight on cards — position comes from the Spotlight directive (--mx/--my). */
+.spotlight {
+  --mx: 50%;
+  --my: 50%;
+}
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    22rem circle at var(--mx) var(--my),
+    color-mix(in oklab, var(--color-accent-500) 12%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.spotlight:hover::after {
+  opacity: 1;
+}
+
+/* Reading progress bar in the sticky header (CSS scroll-driven animation; hidden where unsupported). */
+.scroll-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  .scroll-progress {
+    display: block;
+    transform-origin: 0 50%;
+    animation: grow-x linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+/* Gentle float for decorative chips. */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.float-y { animation: float-y 5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-a, .aurora-b, .aurora-c, .btn-shine::after, .text-gradient-animated,
+  .marquee-track, .float-y {
+    animation: none;
+  }
 }

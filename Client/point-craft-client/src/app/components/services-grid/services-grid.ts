@@ -4,10 +4,11 @@ import { Icon } from '../icon/icon';
 import { ContentStore } from '../../stores/content.store';
 import { LocaleStore } from '../../stores/locale.store';
 import { RevealOnScroll } from '../../shared/reveal-on-scroll.directive';
+import { Spotlight } from '../../shared/spotlight.directive';
 
 @Component({
   selector: 'app-services-grid',
-  imports: [Icon, RevealOnScroll, RouterLink],
+  imports: [Icon, RevealOnScroll, RouterLink, Spotlight],
   templateUrl: './services-grid.html',
   styleUrl: './services-grid.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,10 +3,13 @@
     <div>
       <a [routerLink]="home()" class="inline-flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
         <img ngSrc="logo-96.png" width="96" height="96" alt="" class="h-7 w-7 rounded-lg" />
-        <span class="flex items-center gap-1.5 text-sm font-semibold tracking-tight text-foreground">
-          <span class="tracking-wide">POINTBREAK</span>
-          <span class="bg-gradient-to-r from-accent-500 to-accent2-500 bg-clip-text font-bold text-transparent">VexForge</span>
-          <span class="rounded-md border border-border px-1.5 py-px text-[10px] font-medium uppercase tracking-widest text-muted-foreground">Lab</span>
+        <span class="flex items-center gap-1.5 font-display text-sm font-extrabold uppercase leading-none tracking-[0.06em] text-foreground">
+          <span>POINTBREAK</span>
+          <span class="bg-gradient-to-r from-accent-500 to-accent2-500 bg-clip-text text-transparent">VexForge</span>
+          <span
+            class="ml-0.5 inline-flex h-4 items-center rounded border border-border-strong px-1.5 font-sans text-[9px] font-semibold
+                   leading-none tracking-[0.18em] text-muted-foreground"
+          >Lab</span>
         </span>
       </a>
       <p class="mt-3 max-w-xs text-sm text-muted-foreground">{{ t().seo.organizationDescription }}</p>

@@ -3,10 +3,11 @@ import { Icon } from '../icon/icon';
 import { ContentStore } from '../../stores/content.store';
 import { LocaleStore } from '../../stores/locale.store';
 import { RevealOnScroll } from '../../shared/reveal-on-scroll.directive';
+import { Spotlight } from '../../shared/spotlight.directive';
 
 @Component({
   selector: 'app-tech-stack-section',
-  imports: [Icon, RevealOnScroll],
+  imports: [Icon, RevealOnScroll, Spotlight],
   templateUrl: './tech-stack-section.html',
   styleUrl: './tech-stack-section.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -19,9 +19,10 @@
     @default {
       @let d = detail()!;
       <article>
-        <header class="relative overflow-hidden border-b border-border px-4 pb-14 pt-10 sm:px-6">
+        <header class="relative isolate overflow-hidden border-b border-border px-4 pb-14 pt-10 sm:px-6">
           <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 flex justify-center overflow-hidden">
-            <div class="mt-4 h-64 w-64 rounded-full bg-gradient-to-br from-accent-500/25 to-accent2-500/25 blur-3xl"></div>
+            <div class="bg-grid absolute inset-0"></div>
+            <div class="relative mt-4 h-72 w-[32rem] rounded-full bg-gradient-to-br from-accent-500/25 to-accent2-500/20 blur-3xl"></div>
           </div>
 
           <div class="mx-auto max-w-4xl">
@@ -38,7 +39,7 @@
             <div class="mt-8 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent2-500">
               <svg [appIcon]="d.service.icon" class="h-6 w-6 text-white"></svg>
             </div>
-            <h1 class="mt-5 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{{ d.service.title }}</h1>
+            <h1 class="mt-5 text-3xl font-extrabold text-foreground sm:text-5xl">{{ d.service.title }}</h1>
             <p class="mt-4 max-w-2xl text-lg text-muted-foreground">{{ d.service.description }}</p>
             <a
               [routerLink]="home()"
