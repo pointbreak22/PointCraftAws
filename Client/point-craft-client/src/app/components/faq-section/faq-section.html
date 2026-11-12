@@ -1,4 +1,4 @@
-<section id="faq" class="bg-surface-alt px-4 py-16 sm:px-6 sm:py-24 lg:py-28">
+<section id="faq" class="divider-glow bg-surface-alt px-4 py-16 sm:px-6 sm:py-24 lg:py-28">
   <div class="mx-auto max-w-3xl">
     <div appRevealOnScroll class="mx-auto max-w-2xl text-center">
       <p
@@ -14,7 +14,7 @@
 
     <div class="mt-10 sm:mt-14 space-y-3">
       @for (item of t().faq.items; track item.question) {
-        <details class="group rounded-2xl border border-border bg-surface transition hover:border-border-strong open:border-accent-500/40 open:shadow-lg open:shadow-accent-500/5">
+        <details class="surface-card group rounded-2xl border border-border bg-surface transition hover:border-border-strong open:border-accent-500/40 open:shadow-lg open:shadow-accent-500/5">
           <summary
             class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-5 py-4 sm:px-6 sm:py-5
                    text-left text-base font-semibold text-foreground focus-visible:outline-none

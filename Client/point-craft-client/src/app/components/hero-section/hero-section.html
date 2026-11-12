@@ -1,4 +1,4 @@
-<section class="relative isolate overflow-hidden bg-background px-4 pb-14 pt-12 sm:px-6 sm:pb-24 sm:pt-24 lg:pb-28 lg:pt-28">
+<section class="grain relative isolate overflow-hidden bg-background px-4 pb-14 pt-12 sm:px-6 sm:pb-24 sm:pt-24 lg:pb-28 lg:pt-28">
   <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
     <!-- Grid only around the edges; the centre stays clean behind the headline. -->
     <div class="bg-grid-edges absolute inset-0"></div>
@@ -45,8 +45,8 @@
       <a
         [routerLink]="home()"
         fragment="contact"
-        class="btn-shine group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent-500 to-accent2-500 px-6 py-3
-               text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition
+        class="btn-shine btn-gloss group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent-500 to-accent2-500 px-6 py-3
+               text-sm font-semibold text-white transition
                hover:shadow-xl hover:shadow-accent-500/40 hover:brightness-110
                motion-safe:hover:scale-[1.03] motion-safe:active:scale-[0.98]
                focus-visible:outline-none focus-visible:ring-2
@@ -70,7 +70,7 @@
 
   <ul
     class="mx-auto mt-12 grid max-w-5xl sm:mt-16 grid-cols-1 overflow-hidden rounded-2xl border border-border bg-border
-           gap-px shadow-2xl shadow-black/10 sm:grid-cols-2 lg:grid-cols-4"
+           gap-px shadow-2xl shadow-black/30 ring-1 ring-inset ring-white/5 sm:grid-cols-2 lg:grid-cols-4"
   >
     @for (point of contentStore.trustPoints(); track point.label; let i = $index) {
       <li
