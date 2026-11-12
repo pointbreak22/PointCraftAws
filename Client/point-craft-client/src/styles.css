@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/manrope";
 
 @theme {
+  /* typography: Inter for body text, Manrope for headings (both cover Cyrillic) */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Manrope Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
   /* surfaces — depth hierarchy, darkest to lightest */
   --color-background: #08090d;
   --color-surface: #0c0e13;
@@ -67,4 +73,93 @@
   transition:
     opacity 0.6s ease-out,
     transform 0.6s ease-out;
+}
+
+/* ---------- Base polish ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Anchored sections land below the sticky header instead of under it. */
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-accent-500) 35%, transparent);
+    color: var(--color-foreground);
+  }
+}
+
+/* ---------- Decorative utilities ---------- */
+
+/* Faint engineering grid that fades out towards the edges (hero, page headers). */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
+}
+
+/* Gradient hairline border that lights up on hover; put on a card with `relative`. */
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-accent-500) 70%, transparent),
+    transparent 40%,
+    transparent 60%,
+    color-mix(in oklab, var(--color-accent2-500) 60%, transparent)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card-glow:hover::before,
+.card-glow:focus-within::before {
+  opacity: 1;
+}
+
+.text-gradient {
+  background-image: linear-gradient(90deg, var(--color-accent-400), var(--color-accent2-400));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
