@@ -61,5 +61,8 @@ jobs:
             git pull
             docker compose pull api client
             docker compose up -d
+            # Caddyfile is a single-file bind mount: git pull replaces the file, so Caddy only
+            # sees the new config after a restart (~1s).
+            docker compose restart caddy
             docker builder prune -af
             docker image prune -af

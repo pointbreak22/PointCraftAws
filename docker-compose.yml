@@ -12,6 +12,10 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: "Data Source=/data/pointcraft.db"
       AllowedOrigins__0: ${ALLOWED_ORIGIN:-http://localhost}
+      AllowedOrigins__1: https://pointbreakvexforge.com
+      AllowedOrigins__2: https://www.pointbreakvexforge.com
+      # Absolute URLs in /sitemap.xml (WebAPI/Controllers/SeoController.cs)
+      Site__BaseUrl: https://pointbreakvexforge.com
       Jwt__SigningKey: ${JWT_SIGNING_KEY:?JWT_SIGNING_KEY must be set in .env}
       Jwt__Issuer: pointcraft-api
       Admin__Username: ${ADMIN_USERNAME:?ADMIN_USERNAME must be set in .env}

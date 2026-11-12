@@ -3,4 +3,4 @@ Allow: /
 Disallow: /dashboard
 Disallow: /login
 
-Sitemap: https://pointcraft.duckdns.org/sitemap.xml
+Sitemap: https://pointbreakvexforge.com/sitemap.xml

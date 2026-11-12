@@ -25,7 +25,7 @@ public class SeoController(
     [HttpGet("sitemap.xml")]
     public async Task<IActionResult> GetSitemap(CancellationToken cancellationToken)
     {
-        var baseUrl = (configuration["Site:BaseUrl"] ?? "https://pointcraft.duckdns.org").TrimEnd('/');
+        var baseUrl = (configuration["Site:BaseUrl"] ?? "https://pointbreakvexforge.com").TrimEnd('/');
 
         var paths = new List<(string Path, string Priority)> { ("/", "1.0") };
         paths.AddRange((await services.GetAllAsync(cancellationToken))
