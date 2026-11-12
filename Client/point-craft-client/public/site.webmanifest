@@ -1,6 +1,6 @@
 {
-  "name": "POINTBREAK22 Lab",
-  "short_name": "POINTBREAK22",
+  "name": "POINTBREAK VexForge Lab",
+  "short_name": "VexForge",
   "description": "Разработка веб-сервисов, маркетплейсов, real-time и десктоп-приложений на .NET и Angular.",
   "start_url": "/",
   "scope": "/",

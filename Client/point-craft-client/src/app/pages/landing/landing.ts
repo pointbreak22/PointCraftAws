@@ -9,7 +9,7 @@ import { SiteFooter } from '../../components/site-footer/site-footer';
 import { SiteHeader } from '../../components/site-header/site-header';
 import { TechStackSection } from '../../components/tech-stack-section/tech-stack-section';
 import { SeoService } from '../../core/seo/seo.service';
-import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from '../../core/seo/site';
+import { BRAND_KEYWORDS, ORGANIZATION_ID, SITE_ALTERNATE_NAMES, SITE_NAME, SITE_URL } from '../../core/seo/site';
 import { localizePath } from '../../shared/locale-path';
 import { ContentStore } from '../../stores/content.store';
 import { LocaleStore } from '../../stores/locale.store';
@@ -47,12 +47,14 @@ export class Landing {
         title: t.seo.homeTitle,
         description: t.seo.homeDescription,
         path: '/',
+        keywords: [...BRAND_KEYWORDS, ...t.seo.homeKeywords],
         jsonLd: [
           {
             '@type': 'WebSite',
             '@id': `${SITE_URL}/#website`,
             url: SITE_URL + localizePath('/', locale),
             name: SITE_NAME,
+            alternateName: SITE_ALTERNATE_NAMES,
             inLanguage: locale,
             publisher: { '@id': ORGANIZATION_ID },
           },

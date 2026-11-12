@@ -4,7 +4,16 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Locale } from '../../interfaces/locale';
 import { localizePath } from '../../shared/locale-path';
 import { LocaleStore } from '../../stores/locale.store';
-import { GITHUB_URL, OG_IMAGE, OG_IMAGE_SIZE, ORGANIZATION_ID, SITE_LOGO, SITE_NAME, SITE_URL } from './site';
+import {
+  GITHUB_URL,
+  OG_IMAGE,
+  OG_IMAGE_SIZE,
+  ORGANIZATION_ID,
+  SITE_ALTERNATE_NAMES,
+  SITE_LOGO,
+  SITE_NAME,
+  SITE_URL,
+} from './site';
 
 export interface SeoData {
   title: string;
@@ -75,6 +84,7 @@ export class SeoService {
       '@type': 'ProfessionalService',
       '@id': ORGANIZATION_ID,
       name: SITE_NAME,
+      alternateName: SITE_ALTERNATE_NAMES,
       url: SITE_URL + localizePath('/', locale),
       logo: SITE_LOGO,
       image: SITE_LOGO,
