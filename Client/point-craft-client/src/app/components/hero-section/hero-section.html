@@ -1,17 +1,20 @@
 <section class="relative isolate overflow-hidden bg-background px-4 pb-20 pt-20 sm:px-6 sm:pb-28 sm:pt-28">
   <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-    <div class="bg-grid absolute inset-0"></div>
+    <!-- Grid only around the edges; the centre stays clean behind the headline. -->
+    <div class="bg-grid-edges absolute inset-0"></div>
+    <!-- Soft light from above the headline, not behind it. -->
     <div
-      class="aurora-a absolute left-1/2 top-0 h-[28rem] w-[28rem] rounded-full bg-accent-500/25 blur-3xl
-             sm:h-[36rem] sm:w-[36rem]"
+      class="absolute left-1/2 top-[-22rem] h-[34rem] w-[60rem] -translate-x-1/2 rounded-full bg-accent-500/20 blur-[100px]"
+    ></div>
+    <!-- Coloured glows parked at the sides, drifting slowly. -->
+    <div
+      class="aurora-a absolute -left-40 top-24 h-[26rem] w-[26rem] rounded-full bg-accent-500/15 blur-[90px]"
     ></div>
     <div
-      class="aurora-b absolute left-1/2 top-16 h-[24rem] w-[24rem] rounded-full bg-accent2-500/20 blur-3xl
-             sm:h-[30rem] sm:w-[30rem]"
+      class="aurora-b absolute -right-40 top-10 h-[24rem] w-[24rem] rounded-full bg-violet-500/15 blur-[90px]"
     ></div>
     <div
-      class="aurora-c absolute left-1/2 top-48 h-[20rem] w-[20rem] rounded-full bg-violet-500/15 blur-3xl
-             sm:h-[26rem] sm:w-[26rem]"
+      class="aurora-c absolute -right-20 bottom-0 h-[20rem] w-[20rem] rounded-full bg-accent2-500/10 blur-[90px]"
     ></div>
     <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background"></div>
   </div>
@@ -29,13 +32,12 @@
     </span>
 
     <h1
-      class="mt-7 bg-gradient-to-b from-foreground to-foreground/80 bg-clip-text text-[2.125rem] font-extrabold leading-[1.08]
-             text-transparent sm:text-5xl lg:text-6xl"
+      class="mt-7 text-[2.125rem] font-extrabold leading-[1.08] text-foreground sm:text-5xl lg:text-6xl"
     >
       {{ t().hero.title }}
     </h1>
 
-    <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+    <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-foreground/70 sm:text-lg">
       {{ t().hero.subtitle }}
     </p>
 

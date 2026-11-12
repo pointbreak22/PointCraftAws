@@ -134,6 +134,15 @@
   mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
 }
 
+/* Hero variant: grid visible near the edges, faded out behind the centred text. */
+.bg-grid-edges {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-foreground) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-foreground) 5%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 40%, transparent 35%, #000 85%);
+}
+
 /* Gradient hairline border that lights up on hover; put on a card with `relative`. */
 .card-glow::before {
   content: '';
@@ -174,17 +183,16 @@
 
 /* Slowly drifting aurora blobs behind the hero. */
 @keyframes aurora-a {
-  0%, 100% { transform: translate(-85%, 0) scale(1); }
-  33% { transform: translate(-60%, 3rem) scale(1.1); }
-  66% { transform: translate(-95%, -2rem) scale(0.95); }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(3rem, 2rem) scale(1.1); }
 }
 @keyframes aurora-b {
-  0%, 100% { transform: translate(-10%, 0) scale(1); }
-  50% { transform: translate(-35%, 4rem) scale(1.15); }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-3rem, 3rem) scale(1.12); }
 }
 @keyframes aurora-c {
-  0%, 100% { transform: translate(-50%, 0) scale(0.9); opacity: 0.5; }
-  50% { transform: translate(-30%, -3rem) scale(1.1); opacity: 0.9; }
+  0%, 100% { transform: translate(0, 0); opacity: 0.6; }
+  50% { transform: translate(-2rem, -2rem); opacity: 1; }
 }
 .aurora-a { animation: aurora-a 18s ease-in-out infinite; }
 .aurora-b { animation: aurora-b 22s ease-in-out infinite; }
