@@ -1,7 +1,7 @@
-// Public identity of the site — used for canonical URLs, Open Graph and JSON-LD. The domain is
-// still the original one; change SITE_URL here (and Site:BaseUrl in the API for the sitemap)
-// when the site moves to its own domain.
-export const SITE_URL = 'https://pointcraft.duckdns.org';
+// Public identity of the site — used for canonical URLs, Open Graph and JSON-LD. If the domain
+// changes again, also update Site__BaseUrl in docker-compose.yml (sitemap), robots.txt, the
+// Caddyfile and allowedHosts in angular.json.
+export const SITE_URL = 'https://pointbreakvexforge.com';
 export const SITE_NAME = 'POINTBREAK VexForge Lab';
 /**
  * Other spellings people type for the brand — fed to JSON-LD alternateName and the home page keywords so

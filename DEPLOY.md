@@ -77,16 +77,18 @@ For a backup that actually survives losing the VM/disk, see "Automated backups t
 
 ## 6. Domain + HTTPS
 
-The site runs on `pointcraft.duckdns.org` (DuckDNS, pointed at the VM's IP — AWS's free EC2
-public DNS/IP can't get a Let's Encrypt cert, and there's no paid domain yet). `Caddyfile` is
-already configured for this domain, so Caddy requests and renews the certificate automatically.
+The site runs on `pointbreakvexforge.com` (registered at Spaceship). DNS: A records for `@` and
+`www` point at the VM's IP (13.60.83.42). `Caddyfile` serves the main domain and answers
+`www.pointbreakvexforge.com` and the old `pointcraft.duckdns.org` with a 301 redirect to it; Caddy
+requests and renews Let's Encrypt certificates for all three automatically.
 
-If the VM's IP ever changes (e.g. after a full Stop/Start without an Elastic IP), update the
-A record on [duckdns.org](https://www.duckdns.org) to the new IP — no other config changes needed.
+If the VM's IP ever changes (e.g. after a full Stop/Start without an Elastic IP), update both A
+records at Spaceship (and the DuckDNS record, so the old address keeps redirecting) and `host:`
+in `.github/workflows/deploy.yml`.
 
-To switch to a real registered domain later: update the DNS A record, replace
-`pointcraft.duckdns.org` in `Caddyfile` and `ALLOWED_ORIGIN` in `.env` with the new domain,
-`docker compose restart caddy && docker compose up -d api`.
+To change the domain again: Caddyfile, `Site__BaseUrl` and `AllowedOrigins__*` in
+`docker-compose.yml`, `SITE_URL` in `Client/point-craft-client/src/app/core/seo/site.ts`,
+`public/robots.txt`, `security.allowedHosts` in `angular.json`, and `ALLOWED_ORIGIN` in `.env`.
 
 ## 7. Admin login
 

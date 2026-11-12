@@ -1,4 +1,4 @@
-pointcraft.duckdns.org {
+pointbreakvexforge.com {
 	handle /api/* {
 		reverse_proxy api:8080
 	}
@@ -10,4 +10,10 @@ pointcraft.duckdns.org {
 	handle {
 		reverse_proxy client:4000
 	}
+}
+
+# www and the old DuckDNS address permanently redirect (301) to the main domain, keeping the
+# path and query, so search engines move their index and old links keep working.
+www.pointbreakvexforge.com, pointcraft.duckdns.org {
+	redir https://pointbreakvexforge.com{uri} permanent
 }
