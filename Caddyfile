@@ -12,8 +12,7 @@ pointbreakvexforge.com {
 	}
 }
 
-# www and the old DuckDNS address permanently redirect (301) to the main domain, keeping the
-# path and query, so search engines move their index and old links keep working.
-www.pointbreakvexforge.com, pointcraft.duckdns.org {
+# www permanently redirects (301) to the main domain, keeping the path and query.
+www.pointbreakvexforge.com {
 	redir https://pointbreakvexforge.com{uri} permanent
 }

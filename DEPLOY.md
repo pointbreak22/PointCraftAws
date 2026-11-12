@@ -79,11 +79,11 @@ For a backup that actually survives losing the VM/disk, see "Automated backups t
 
 The site runs on `pointbreakvexforge.com` (registered at Spaceship). DNS: A records for `@` and
 `www` point at the VM's IP (13.60.83.42). `Caddyfile` serves the main domain and answers
-`www.pointbreakvexforge.com` and the old `pointcraft.duckdns.org` with a 301 redirect to it; Caddy
-requests and renews Let's Encrypt certificates for all three automatically.
+`www.pointbreakvexforge.com` with a 301 redirect to it; Caddy requests and renews Let's Encrypt
+certificates for both automatically. (The old `pointcraft.duckdns.org` address was released.)
 
 If the VM's IP ever changes (e.g. after a full Stop/Start without an Elastic IP), update both A
-records at Spaceship (and the DuckDNS record, so the old address keeps redirecting) and `host:`
+records at Spaceship and `host:`
 in `.github/workflows/deploy.yml`.
 
 To change the domain again: Caddyfile, `Site__BaseUrl` and `AllowedOrigins__*` in
