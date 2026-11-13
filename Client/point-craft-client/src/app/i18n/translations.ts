@@ -179,8 +179,9 @@ const en: Translations = {
       {
         question: 'How long does development take?',
         answer:
-          'An MVP usually takes 3–6 weeks. Larger systems — marketplaces, messengers, desktop software — are built ' +
-          'in iterations with a working demo every one or two weeks.',
+          'It depends on the requirements. A compact MVP with a clear scope can be launched very quickly — sometimes ' +
+          'in just a few days. Larger systems — marketplaces, messengers, desktop software — are built in iterations ' +
+          'with working demos along the way. We give exact timelines after reviewing your brief, together with the estimate.',
       },
       {
         question: 'Who owns the source code?',
@@ -330,8 +331,9 @@ const ru: Translations = {
       {
         question: 'Сколько времени занимает разработка?',
         answer:
-          'MVP — обычно 3–6 недель. Крупные системы — маркетплейсы, мессенджеры, десктоп-программы — делаем ' +
-          'итерациями с рабочим демо каждые одну-две недели.',
+          'Зависит от технического задания. Небольшой MVP с понятными задачами можно запустить очень быстро — ' +
+          'иногда за считаные дни. Крупные системы — маркетплейсы, мессенджеры, десктоп-программы — делаем ' +
+          'итерациями с рабочими демо по ходу работы. Точные сроки называем после разбора ТЗ, вместе с оценкой стоимости.',
       },
       {
         question: 'Кому принадлежит исходный код?',
