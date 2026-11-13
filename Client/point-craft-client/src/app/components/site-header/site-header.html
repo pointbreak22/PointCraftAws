@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-40 border-b border-border/70 bg-background/75 backdrop-blur-xl backdrop-saturate-150">
+<header class="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-md">
   <div
     aria-hidden="true"
     class="scroll-progress absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-accent-500 via-accent2-400 to-violet-400"
@@ -14,8 +14,8 @@
           <span>POINTBREAK</span>
           <span class="bg-gradient-to-r from-accent-500 to-accent2-500 bg-clip-text text-transparent">VexForge</span>
           <span
-            class="inline-flex h-[clamp(13px,3.6vw,16px)] items-center rounded border border-border-strong px-[clamp(3px,1vw,6px)] font-sans
-                   text-[clamp(7px,2vw,9px)] font-semibold leading-none tracking-[0.12em] text-muted-foreground sm:ml-0.5 sm:tracking-[0.18em]"
+            class="inline-flex h-[clamp(13px,3.6vw,16px)] items-center rounded border border-accent-500/45 bg-accent-500/10 px-[clamp(3px,1vw,6px)] font-sans
+                   text-[clamp(7px,2vw,9px)] font-semibold leading-none tracking-[0.12em] text-accent-500 sm:ml-0.5 sm:tracking-[0.18em]"
           >Lab</span>
         </span>
     </a>
@@ -25,7 +25,7 @@
         <a
           [routerLink]="home()"
           [fragment]="link.fragment"
-          class="rounded text-sm text-muted-foreground transition hover:text-foreground
+          class="rounded text-sm font-medium text-foreground/80 transition hover:text-foreground
                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500
                  focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
@@ -35,7 +35,7 @@
     </nav>
 
     <div class="flex shrink-0 items-center gap-0.5 sm:gap-2">
-      <nav [attr.aria-label]="t().nav.language" class="flex overflow-hidden rounded-lg border border-border">
+      <nav [attr.aria-label]="t().nav.language" class="flex overflow-hidden rounded-lg border border-border-strong">
         @for (option of localeLinks(); track option.id) {
           <a
             [routerLink]="option.href"
@@ -47,7 +47,7 @@
                    focus-visible:ring-offset-surface"
             [class.bg-accent-500]="locale() === option.id"
             [class.text-white]="locale() === option.id"
-            [class.text-faint-foreground]="locale() !== option.id"
+            [class.text-muted-foreground]="locale() !== option.id"
             [class.hover:bg-surface-hover]="locale() !== option.id"
           >
             {{ option.label }}
@@ -57,7 +57,7 @@
 
       <button
         type="button"
-        class="flex h-[clamp(26px,8vw,36px)] w-[clamp(26px,8vw,36px)] items-center justify-center rounded-lg text-faint-foreground transition
+        class="flex h-[clamp(26px,8vw,36px)] w-[clamp(26px,8vw,36px)] items-center justify-center rounded-lg text-muted-foreground transition
                hover:bg-surface-hover hover:text-foreground focus-visible:outline-none
                focus-visible:ring-2 focus-visible:ring-accent-500"
         [attr.aria-label]="theme() === 'dark' ? t().theme.switchToLight : t().theme.switchToDark"
@@ -84,7 +84,7 @@
 
       <button
         type="button"
-        class="flex h-[clamp(26px,8vw,36px)] w-[clamp(26px,8vw,36px)] items-center justify-center rounded-lg text-faint-foreground
+        class="flex h-[clamp(26px,8vw,36px)] w-[clamp(26px,8vw,36px)] items-center justify-center rounded-lg text-muted-foreground
                hover:bg-surface-hover hover:text-foreground focus-visible:outline-none
                focus-visible:ring-2 focus-visible:ring-accent-500 md:hidden"
         [attr.aria-label]="t().nav.openMenu"
@@ -97,7 +97,7 @@
   </div>
 
   @if (mobileMenuOpen()) {
-    <nav aria-label="Mobile" class="border-t border-border bg-surface/95 px-4 py-3 backdrop-blur-xl sm:px-6 md:hidden">
+    <nav aria-label="Mobile" class="border-t border-border bg-surface px-4 py-3 sm:px-6 md:hidden">
       <ul class="space-y-1">
         @for (link of navLinks; track link.fragment) {
           <li>
