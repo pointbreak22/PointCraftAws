@@ -21,7 +21,7 @@ public static class TechStackExpansion
     private static readonly Dictionary<string, string[]> Additions = new()
     {
         ["Frontend"] = ["React", "Vue 3", "TypeScript"],
-        ["Backend"] = ["Go", "REST / GraphQL / gRPC"],
+        ["Backend"] = ["Go", "Rust", "REST / GraphQL / gRPC"],
         ["Real-time & background jobs"] = ["RabbitMQ", "Kafka"],
         ["Desktop"] = ["WinUI 3", "MSIX / Velopack"],
         ["Data & cache"] = ["MS SQL Server", "MySQL / MariaDB", "MongoDB", "ClickHouse", "Elasticsearch"],
