@@ -16,11 +16,13 @@ public static class TechStackExpansion
         ["Node.js"] = ["Node.js (NestJS / Express)"],
         ["Python (Django / Flask)"] = ["Python (Django / FastAPI)"],
         ["WPF / WinForms"] = ["WPF", "WinForms"],
+        ["Next.js (React)"] = ["React / Next.js"],
+        ["Nuxt (Vue)"] = ["Vue / Nuxt"],
     };
 
     private static readonly Dictionary<string, string[]> Additions = new()
     {
-        ["Frontend"] = ["React", "Vue 3", "TypeScript"],
+        ["Frontend"] = ["TypeScript"],
         ["Backend"] = ["Go", "Rust", "REST / GraphQL / gRPC"],
         ["Real-time & background jobs"] = ["RabbitMQ", "Kafka"],
         ["Desktop"] = ["WinUI 3", "MSIX / Velopack"],
