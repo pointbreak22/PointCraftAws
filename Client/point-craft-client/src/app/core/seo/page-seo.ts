@@ -17,12 +17,12 @@ const SERVICES: Record<string, Record<Locale, PageSeo>> = {
     ru: {
       title: 'Разработка веб-сервисов, SaaS и личных кабинетов на .NET и Angular',
       description: 'Разработка веб-сервисов, SaaS, B2B-порталов и личных кабинетов под ключ: .NET, Angular с SSR, API, админ-панель, деплой в облако.',
-      keywords: ['разработка веб-сервиса', 'разработка SaaS', 'личный кабинет', 'B2B-портал', 'веб-приложение на заказ', '.NET', 'Angular'],
+      keywords: ['разработка веб-сервиса', 'разработка SaaS', 'личный кабинет', 'B2B-портал', 'веб-приложение на заказ', 'разработка CRM', '.NET', 'Angular', 'React', 'NestJS'],
     },
     en: {
       title: 'Web service, SaaS & client portal development on .NET and Angular',
       description: 'Custom web services, SaaS products, B2B portals and client dashboards: .NET backend, Angular with SSR, APIs, admin panel and cloud deployment.',
-      keywords: ['web service development', 'SaaS development', 'client portal', 'B2B portal', 'custom web application', '.NET', 'Angular'],
+      keywords: ['web service development', 'SaaS development', 'client portal', 'B2B portal', 'custom web application', 'custom CRM development', '.NET', 'Angular', 'React', 'NestJS'],
     },
   },
   'marketplaces-ecommerce': {
@@ -52,25 +52,25 @@ const SERVICES: Record<string, Record<Locale, PageSeo>> = {
   'desktop-apps': {
     ru: {
       title: 'Разработка десктоп-приложений для Windows, macOS и Linux на C#',
-      description: 'Разработка настольных программ на C# и Avalonia: автоматизация, работа с оборудованием и звуком, офлайн-режим, плагины, кроссплатформенность.',
-      keywords: ['разработка десктоп-приложения', 'программа для Windows на заказ', 'кроссплатформенное приложение', 'Avalonia', 'C#', 'WPF'],
+      description: 'Разработка настольных программ на C#: Avalonia, WPF, WinForms, .NET MAUI. Автоматизация, работа с оборудованием, офлайн-режим, плагины.',
+      keywords: ['разработка десктоп-приложения', 'программа для Windows на заказ', 'кроссплатформенное приложение', 'Avalonia', 'C#', 'WPF', 'WinForms', '.NET MAUI', 'WinUI'],
     },
     en: {
       title: 'Desktop app development for Windows, macOS & Linux in C#',
       description: 'Cross-platform desktop software in C# and Avalonia: automation, hardware and audio, offline work and plugin architectures.',
-      keywords: ['desktop application development', 'custom Windows software', 'cross-platform desktop app', 'Avalonia', 'C#'],
+      keywords: ['desktop application development', 'custom Windows software', 'cross-platform desktop app', 'Avalonia', 'C#', 'WPF', 'WinForms', '.NET MAUI'],
     },
   },
   'automation-parsing': {
     ru: {
       title: 'Парсинг сайтов, автоматизация браузера и интеграции на заказ',
       description: 'Парсинг сайтов и сбор данных, автоматизация рутины в браузере на Playwright, интеграции с CRM, 1С и API. Очереди задач, прокси, мониторинг.',
-      keywords: ['парсинг сайтов на заказ', 'парсер', 'автоматизация браузера', 'Playwright', 'интеграция с CRM', 'интеграция API'],
+      keywords: ['парсинг сайтов на заказ', 'парсер', 'автоматизация браузера', 'Playwright', 'интеграция с CRM', 'интеграция с 1С', 'интеграция API', 'Telegram-бот на заказ', 'ИИ-автоматизация'],
     },
     en: {
       title: 'Web scraping, browser automation & integrations',
       description: 'Website scraping and data collection, browser automation with Playwright, CRM and API integrations, with task queues, proxies and monitoring.',
-      keywords: ['web scraping service', 'data scraping', 'browser automation', 'Playwright', 'API integration', 'CRM integration'],
+      keywords: ['web scraping service', 'data scraping', 'browser automation', 'Playwright', 'API integration', 'CRM integration', '1C integration', 'Telegram bot development', 'AI automation'],
     },
   },
   'legacy-migration': {
@@ -100,13 +100,13 @@ const SERVICES: Record<string, Record<Locale, PageSeo>> = {
   'devops-cloud': {
     ru: {
       title: 'DevOps, CI/CD и деплой в AWS и Azure на Docker',
-      description: 'Настройка DevOps: Docker, CI/CD на GitHub Actions, деплой в AWS и Azure, HTTPS, бэкапы и мониторинг, чтобы релизы проходили без простоев.',
-      keywords: ['DevOps на заказ', 'настройка CI/CD', 'деплой в AWS', 'Azure', 'Docker', 'GitHub Actions'],
+      description: 'Настройка DevOps: Docker, Kubernetes, CI/CD на GitHub Actions и GitLab CI, деплой в AWS, Azure и Yandex Cloud, бэкапы и мониторинг.',
+      keywords: ['DevOps на заказ', 'настройка CI/CD', 'деплой в AWS', 'Azure', 'Yandex Cloud', 'Docker', 'Kubernetes', 'GitHub Actions', 'GitLab CI'],
     },
     en: {
       title: 'DevOps, CI/CD & deployment to AWS and Azure with Docker',
       description: 'DevOps setup: Docker, GitHub Actions CI/CD, AWS and Azure hosting, HTTPS, backups and monitoring for downtime-free releases.',
-      keywords: ['DevOps services', 'CI/CD setup', 'AWS deployment', 'Azure', 'Docker', 'GitHub Actions'],
+      keywords: ['DevOps services', 'CI/CD setup', 'AWS deployment', 'Azure', 'Docker', 'Kubernetes', 'GitHub Actions', 'GitLab CI'],
     },
   },
 };

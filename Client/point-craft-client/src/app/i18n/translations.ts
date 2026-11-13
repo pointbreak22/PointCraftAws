@@ -108,13 +108,16 @@ export interface Translations {
 
 const en: Translations = {
   seo: {
-    homeTitle: 'POINTBREAK VexForge Lab — web services, marketplaces, real-time & desktop app development',
+    homeTitle: 'Custom web, mobile & desktop app development — POINTBREAK VexForge Lab',
     homeDescription:
-      'PointBreak VexForge Lab builds web services, SaaS, marketplaces, real-time apps with chat and video calls, ' +
-      'and cross-platform desktop software on .NET and Angular — with SSR and SEO out of the box.',
-    homeKeywords: ['web development studio', 'web service development', 'marketplace development', 'desktop app development', '.NET', 'Angular'],
+      'Custom development: web services, SaaS, marketplaces, messengers, mobile and desktop apps, 1C and CRM integrations, AI bots. .NET, Angular, React.',
+    homeKeywords: [
+      'custom software development', 'web development studio', 'web service development', 'marketplace development',
+      'mobile app development', 'desktop app development', 'CRM integration', '1C integration', 'AI chatbot development',
+      'Telegram bot development', '.NET', 'Angular', 'React', 'NestJS',
+    ],
     organizationDescription:
-      'Development studio: web services, SaaS, marketplaces, real-time and desktop applications on .NET and Angular.',
+      'Development studio: web services, SaaS, marketplaces, real-time, mobile and desktop apps, integrations and AI automation.',
     serviceTitleSuffix: 'PointBreak VexForge',
     projectTitleSuffix: 'PointBreak VexForge case study',
   },
@@ -256,13 +259,16 @@ const en: Translations = {
 
 const ru: Translations = {
   seo: {
-    homeTitle: 'POINTBREAK VexForge Lab — разработка веб-сервисов, маркетплейсов, real-time и десктоп-приложений',
+    homeTitle: 'Разработка веб-сервисов, мобильных и десктоп-приложений на заказ — POINTBREAK VexForge Lab',
     homeDescription:
-      'PointBreak VexForge Lab разрабатывает веб-сервисы, SaaS, маркетплейсы, мессенджеры с видеозвонками и ' +
-      'кроссплатформенные десктоп-приложения на .NET и Angular — с SSR и SEO из коробки.',
-    homeKeywords: ['студия разработки', 'разработка веб-сервисов', 'разработка маркетплейса', 'разработка десктоп-приложений', '.NET', 'Angular'],
+      'Разработка на заказ: веб-сервисы, SaaS, маркетплейсы, мессенджеры, мобильные и десктоп-приложения, интеграции с 1С и CRM, ИИ-боты.',
+    homeKeywords: [
+      'разработка на заказ', 'студия разработки', 'разработка веб-сервисов', 'разработка сайта на заказ',
+      'разработка маркетплейса', 'разработка мобильных приложений', 'разработка десктоп-приложений', 'интеграция с 1С',
+      'интеграция с CRM', 'разработка чат-бота', 'Telegram-бот на заказ', '.NET', 'Angular', 'React', 'NestJS',
+    ],
     organizationDescription:
-      'Студия разработки: веб-сервисы, SaaS, маркетплейсы, real-time и десктоп-приложения на .NET и Angular.',
+      'Студия разработки: веб-сервисы, SaaS, маркетплейсы, real-time, мобильные и десктоп-приложения, интеграции и ИИ-автоматизация.',
     serviceTitleSuffix: 'PointBreak VexForge',
     projectTitleSuffix: 'кейс PointBreak VexForge',
   },

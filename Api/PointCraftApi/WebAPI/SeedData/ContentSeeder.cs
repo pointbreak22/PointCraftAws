@@ -13,6 +13,7 @@ namespace WebAPI.SeedData;
 //                and slugs for every service and case study (they now have their own pages).
 //   revision 3 — Python (Django / Flask) and Java (Spring Boot) added to the Backend tech stack.
 //   revision 4 — the ARTstil case study, appended after the existing ones.
+//   revision 5 — tech stack: NestJS, wider Desktop, more technologies, Mobile/AI/Integrations cards.
 //
 // A table is only rewritten when it's empty or still holds exactly the original seed (matched
 // by English title); anything the admin added or renamed is kept and just gets a slug.
@@ -21,6 +22,7 @@ public static partial class ContentSeeder
     private const int RelaunchRevision = 2;
     private const int BackendLanguagesRevision = 3;
     private const int ArtstilRevision = 4;
+    private const int TechStackExpansionRevision = 5;
     private static readonly string[] BackendLanguages = ["Python (Django / Flask)", "Java (Spring Boot)"];
 
     // English titles of the content seeded before the relaunch (revision 1, never recorded as a
@@ -54,6 +56,13 @@ public static partial class ContentSeeder
         {
             await AddArtstilCaseStudyAsync(db, logger, cancellationToken);
             db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = ArtstilRevision, AppliedAtUtc = DateTime.UtcNow });
+            await db.SaveChangesAsync(cancellationToken);
+        }
+
+        if (!applied.Contains(TechStackExpansionRevision))
+        {
+            await TechStackExpansion.ApplyAsync(db, logger, TechStackExpansionRevision, cancellationToken);
+            db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = TechStackExpansionRevision, AppliedAtUtc = DateTime.UtcNow });
             await db.SaveChangesAsync(cancellationToken);
         }
     }

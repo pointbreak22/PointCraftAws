@@ -94,7 +94,10 @@ export class SeoService {
       availableLanguage: ['ru', 'en'],
       knowsAbout: [
         'Web development', 'SaaS', 'Marketplaces', 'E-commerce', 'Real-time applications', 'SignalR', 'WebRTC',
-        'Desktop applications', 'Avalonia', '.NET', 'Angular', 'SSR', 'SEO', 'Web scraping', 'DevOps', 'Docker',
+        'Desktop applications', 'Avalonia', 'WPF', '.NET MAUI', 'Mobile applications', 'React Native', 'Flutter',
+        '.NET', 'ASP.NET Core', 'Angular', 'React', 'Next.js', 'Vue', 'Node.js', 'NestJS', 'PostgreSQL', 'SSR', 'SEO',
+        'Web scraping', '1C integration', 'CRM integration', 'Telegram bots', 'AI integration', 'DevOps', 'Docker',
+        'Kubernetes', 'CI/CD',
       ],
     };
   }
