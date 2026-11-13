@@ -14,6 +14,7 @@ namespace WebAPI.SeedData;
 //   revision 3 — Python (Django / Flask) and Java (Spring Boot) added to the Backend tech stack.
 //   revision 4 — the ARTstil case study, appended after the existing ones.
 //   revision 5 — tech stack: NestJS, wider Desktop, more technologies, Mobile/AI/Integrations cards.
+//   revision 6 — the "MVP launch in 3–6 weeks" trust point no longer promises a fixed timeline.
 //
 // A table is only rewritten when it's empty or still holds exactly the original seed (matched
 // by English title); anything the admin added or renamed is kept and just gets a slug.
@@ -23,6 +24,7 @@ public static partial class ContentSeeder
     private const int BackendLanguagesRevision = 3;
     private const int ArtstilRevision = 4;
     private const int TechStackExpansionRevision = 5;
+    private const int MvpTrustPointRevision = 6;
     private static readonly string[] BackendLanguages = ["Python (Django / Flask)", "Java (Spring Boot)"];
 
     // English titles of the content seeded before the relaunch (revision 1, never recorded as a
@@ -65,7 +67,30 @@ public static partial class ContentSeeder
             db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = TechStackExpansionRevision, AppliedAtUtc = DateTime.UtcNow });
             await db.SaveChangesAsync(cancellationToken);
         }
+
+        if (!applied.Contains(MvpTrustPointRevision))
+        {
+            await RewordMvpTrustPointAsync(db, logger, cancellationToken);
+            db.AppliedContentRevisions.Add(new AppliedContentRevision { Revision = MvpTrustPointRevision, AppliedAtUtc = DateTime.UtcNow });
+            await db.SaveChangesAsync(cancellationToken);
+        }
     }
+
+    // Only the seeded wording is replaced; a trust point the admin already reworded is kept as is.
+    private static async Task RewordMvpTrustPointAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
+    {
+        var points = await db.SiteTrustPoints.Where(x => x.LabelEn == "MVP launch in 3–6 weeks").ToListAsync(cancellationToken);
+        foreach (var point in points)
+        {
+            point.LabelEn = MvpTrustPointEn;
+            point.LabelRu = MvpTrustPointRu;
+        }
+
+        logger.LogInformation("Content revision {Revision}: {Count} MVP trust point(s) reworded.", MvpTrustPointRevision, points.Count);
+    }
+
+    private const string MvpTrustPointEn = "Fast MVP launch, scoped to your brief";
+    private const string MvpTrustPointRu = "Быстрый запуск MVP под ваше ТЗ";
 
     // Goes after the admin's current case studies; skipped if the admin already made one with this slug.
     private static async Task AddArtstilCaseStudyAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
