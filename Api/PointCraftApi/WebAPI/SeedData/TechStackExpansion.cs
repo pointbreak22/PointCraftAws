@@ -18,6 +18,7 @@ public static class TechStackExpansion
         ["WPF / WinForms"] = ["WPF", "WinForms"],
         ["Next.js (React)"] = ["React / Next.js"],
         ["Nuxt (Vue)"] = ["Vue / Nuxt"],
+        ["GitHub Actions"] = ["GitHub Actions / GitLab CI"],
     };
 
     private static readonly Dictionary<string, string[]> Additions = new()
