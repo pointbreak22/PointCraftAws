@@ -12,7 +12,7 @@ public static class RelaunchContent
         new() { SortOrder = 1, Icon = "check", LabelEn = "Clean Architecture, CQRS and automated tests", LabelRu = "Clean Architecture, CQRS и автотесты" },
         new() { SortOrder = 2, Icon = "server", LabelEn = "SSR and SEO setup out of the box", LabelRu = "SSR и SEO-настройка из коробки" },
         new() { SortOrder = 3, Icon = "message", LabelEn = "Real-time: chat, notifications, calls", LabelRu = "Real-time: чаты, уведомления, звонки" },
-        new() { SortOrder = 4, Icon = "zap", LabelEn = "MVP launch in 3–6 weeks", LabelRu = "Запуск MVP за 3–6 недель" },
+        new() { SortOrder = 4, Icon = "zap", LabelEn = "MVP on a tight timeline", LabelRu = "MVP в сжатые сроки" },
     ];
 
     public static List<SiteTechStackArea> TechStack() =>
