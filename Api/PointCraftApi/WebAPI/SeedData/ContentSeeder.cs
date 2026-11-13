@@ -89,8 +89,8 @@ public static partial class ContentSeeder
         logger.LogInformation("Content revision {Revision}: {Count} MVP trust point(s) reworded.", MvpTrustPointRevision, points.Count);
     }
 
-    private const string MvpTrustPointEn = "Fast MVP launch, scoped to your brief";
-    private const string MvpTrustPointRu = "Быстрый запуск MVP под ваше ТЗ";
+    private const string MvpTrustPointEn = "MVP on a tight timeline";
+    private const string MvpTrustPointRu = "MVP в сжатые сроки";
 
     // Goes after the admin's current case studies; skipped if the admin already made one with this slug.
     private static async Task AddArtstilCaseStudyAsync(ApplicationDbContext db, ILogger logger, CancellationToken cancellationToken)
