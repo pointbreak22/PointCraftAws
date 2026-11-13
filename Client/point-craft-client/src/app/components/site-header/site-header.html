@@ -6,7 +6,7 @@
   <div class="mx-auto flex h-14 max-w-6xl items-center justify-between gap-1.5 px-3 sm:h-16 sm:gap-2 sm:px-6">
     <a
       [routerLink]="home()"
-      class="flex min-w-0 shrink items-center gap-[clamp(4px,1.4vw,8px)] rounded-lg focus-visible:outline-none focus-visible:ring-2
+      class="flex min-w-0 shrink items-center gap-[clamp(4px,1.4vw,8px)] lg:shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2
              focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
     >
       <img ngSrc="logo-96.png" width="96" height="96" priority alt="" class="h-[clamp(20px,6vw,28px)] w-[clamp(20px,6vw,28px)] shrink-0 rounded-md sm:rounded-lg" />
@@ -20,7 +20,7 @@
         </span>
     </a>
 
-    <nav aria-label="Primary" class="hidden items-center gap-6 md:flex">
+    <nav aria-label="Primary" class="hidden items-center gap-5 lg:flex xl:gap-6">
       @for (link of navLinks; track link.fragment) {
         <a
           [routerLink]="home()"
@@ -86,7 +86,7 @@
         type="button"
         class="flex h-[clamp(26px,8vw,36px)] w-[clamp(26px,8vw,36px)] items-center justify-center rounded-lg text-muted-foreground
                hover:bg-surface-hover hover:text-foreground focus-visible:outline-none
-               focus-visible:ring-2 focus-visible:ring-accent-500 md:hidden"
+               focus-visible:ring-2 focus-visible:ring-accent-500 lg:hidden"
         [attr.aria-label]="t().nav.openMenu"
         [attr.aria-expanded]="mobileMenuOpen()"
         (click)="toggleMobileMenu()"
@@ -97,7 +97,7 @@
   </div>
 
   @if (mobileMenuOpen()) {
-    <nav aria-label="Mobile" class="border-t border-border bg-surface px-4 py-3 sm:px-6 md:hidden">
+    <nav aria-label="Mobile" class="max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-border bg-surface px-4 py-3 sm:px-6 lg:hidden">
       <ul class="space-y-1">
         @for (link of navLinks; track link.fragment) {
           <li>

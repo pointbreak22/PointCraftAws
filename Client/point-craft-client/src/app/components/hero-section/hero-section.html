@@ -1,4 +1,4 @@
-<section class="grain relative isolate overflow-hidden bg-background px-4 pb-14 pt-12 sm:px-6 sm:pb-24 sm:pt-24 lg:pb-28 lg:pt-28">
+<section class="grain relative isolate overflow-hidden bg-background px-4 pb-14 pt-12 sm:px-6 sm:pb-24 sm:pt-24 lg:pb-28 lg:pt-28 [@media(max-height:560px)_and_(orientation:landscape)]:pb-12 [@media(max-height:560px)_and_(orientation:landscape)]:pt-8">
   <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
     <!-- Grid only around the edges; the centre stays clean behind the headline. -->
     <div class="bg-grid-edges absolute inset-0"></div>
@@ -33,7 +33,7 @@
     </span>
 
     <h1
-      class="mt-7 text-[clamp(1.6rem,7.6vw,2.125rem)] font-extrabold leading-[1.08] text-foreground sm:text-5xl lg:text-6xl"
+      class="mt-7 text-balance text-[clamp(1.6rem,7.6vw,2.125rem)] font-extrabold leading-[1.08] text-foreground sm:text-[clamp(1.75rem,min(5.4vw,9vh),3rem)] lg:text-[clamp(2.25rem,min(5vw,9.5vh),3.75rem)] [@media(max-height:560px)_and_(orientation:landscape)]:mt-5"
     >
       {{ t().hero.title }}
     </h1>
