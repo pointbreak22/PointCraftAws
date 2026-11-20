@@ -1,12 +1,13 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GITHUB_URL } from '../../core/seo/site';
+import { RANKED_PROJECT_IDEAS } from '../../i18n/project-ideas';
 import { ContentStore } from '../../stores/content.store';
 import { LocaleStore } from '../../stores/locale.store';
 import { Icon } from '../icon/icon';
 
-// Lists every service and project page, so each one is linked from every page of the site —
+// Lists every service, project and idea page, so each one is linked from every page of the site —
 // crawlers find them all even before the sitemap is read.
 @Component({
   selector: 'app-site-footer',
@@ -23,4 +24,8 @@ export class SiteFooter {
   protected readonly home = this.localeStore.home;
   protected readonly prefix = this.localeStore.prefix;
   protected readonly githubUrl = GITHUB_URL;
+  protected readonly ideas = computed(() => {
+    const locale = this.localeStore.locale();
+    return RANKED_PROJECT_IDEAS.map((idea) => ({ slug: idea.slug, title: idea.text[locale].title }));
+  });
 }

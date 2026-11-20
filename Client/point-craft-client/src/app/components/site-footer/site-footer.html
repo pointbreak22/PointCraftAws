@@ -1,5 +1,5 @@
 <footer class="divider-glow relative isolate overflow-hidden bg-background px-4 pb-10 pt-14 sm:px-6 sm:pt-16">
-  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr]">
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
     <div>
       <a [routerLink]="home()" class="inline-flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
         <img ngSrc="logo-96.png" width="96" height="96" alt="" class="h-7 w-7 rounded-lg" />
@@ -54,6 +54,19 @@
         </ul>
       </nav>
     }
+
+    <nav [attr.aria-label]="t().ideas.crumb">
+      <h2 class="text-xs font-semibold uppercase tracking-wide text-faint-foreground">{{ t().ideas.crumb }}</h2>
+      <ul class="mt-3 space-y-2">
+        @for (idea of ideas(); track idea.slug) {
+          <li>
+            <a [routerLink]="prefix() + '/ideas/' + idea.slug" class="rounded text-sm text-muted-foreground transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
+              {{ idea.title }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
   </div>
 
   <p

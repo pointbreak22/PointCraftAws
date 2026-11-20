@@ -58,6 +58,31 @@ export interface Translations {
     solutionLabel: string;
     more: string;
   };
+  ideas: {
+    heading: string;
+    subheading: string;
+    badge: string;
+    more: string;
+    /** Explains how the list is ordered. */
+    rankingNote: string;
+    demand: string;
+    gap: string;
+    /** "out of", for the screen-reader text of the 1–5 meters. */
+    outOf: string;
+    edge: string;
+    otherTask: string;
+    otherTaskButton: string;
+    crumb: string;
+    features: string;
+    audience: string;
+    stack: string;
+    relatedServices: string;
+    otherIdeas: string;
+    ctaHeading: string;
+    ctaText: string;
+    ctaButton: string;
+    titleSuffix: string;
+  };
   faq: {
     heading: string;
     subheading: string;
@@ -165,6 +190,31 @@ const en: Translations = {
     taskLabel: 'Task:',
     solutionLabel: 'Solution:',
     more: 'Architecture in detail',
+  },
+  ideas: {
+    heading: 'Projects I can take on at any moment',
+    subheading:
+      'Ten products businesses ask for most often on freelance marketplaces and forums. Each one is ready to start — ' +
+      'pick an idea or bring your own.',
+    badge: 'Ready to start',
+    more: 'What’s inside',
+    rankingNote: 'Ranked by demand on freelance marketplaces and forums and by how few ready-made alternatives there are.',
+    demand: 'Demand',
+    gap: 'Few alternatives',
+    outOf: 'out of',
+    edge: 'Why build it custom',
+    otherTask: 'Your task is not on the list?',
+    otherTaskButton: 'Describe it',
+    crumb: 'Ready-to-start projects',
+    features: 'What the product does',
+    audience: 'Who orders it',
+    stack: 'Typical stack',
+    relatedServices: 'Related services',
+    otherIdeas: 'Other projects I can start right away',
+    ctaHeading: 'Want this for your business?',
+    ctaText: 'Tell me about your task — I’ll suggest the scope of a first working version and an estimate.',
+    ctaButton: 'Discuss the project',
+    titleSuffix: 'POINTBREAK VexForge',
   },
   faq: {
     heading: 'Frequently asked questions',
@@ -317,6 +367,31 @@ const ru: Translations = {
     taskLabel: 'Задача:',
     solutionLabel: 'Решение:',
     more: 'Архитектура подробно',
+  },
+  ideas: {
+    heading: 'Проекты, за которые могу взяться в любой момент',
+    subheading:
+      'Десять продуктов, которые бизнес чаще всего заказывает на фриланс-биржах и обсуждает на форумах. ' +
+      'Каждый готов начать сразу — выберите идею или предложите свою.',
+    badge: 'Готов начать',
+    more: 'Что входит',
+    rankingNote: 'Отсортировано по спросу на фриланс-биржах и форумах и по тому, насколько мало готовых аналогов.',
+    demand: 'Спрос',
+    gap: 'Мало аналогов',
+    outOf: 'из',
+    edge: 'Почему на заказ',
+    otherTask: 'Вашей задачи нет в списке?',
+    otherTaskButton: 'Опишите её',
+    crumb: 'Готовые к старту проекты',
+    features: 'Что умеет продукт',
+    audience: 'Кому подходит',
+    stack: 'Типичный стек',
+    relatedServices: 'Связанные услуги',
+    otherIdeas: 'Другие проекты, за которые могу взяться сразу',
+    ctaHeading: 'Нужно такое для вашего бизнеса?',
+    ctaText: 'Расскажите о задаче — предложу объём первой рабочей версии и оценку стоимости.',
+    ctaButton: 'Обсудить проект',
+    titleSuffix: 'POINTBREAK VexForge',
   },
   faq: {
     heading: 'Частые вопросы',

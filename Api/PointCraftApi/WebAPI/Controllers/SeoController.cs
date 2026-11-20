@@ -22,6 +22,22 @@ public class SeoController(
     private static readonly XNamespace Sitemap = "http://www.sitemaps.org/schemas/sitemap/0.9";
     private static readonly XNamespace Xhtml = "http://www.w3.org/1999/xhtml";
 
+    // "Projects I can take on at any moment" (/ideas/:slug). Their content is static in the
+    // client (src/app/i18n/project-ideas.ts), not in the CMS — keep this list in sync with it.
+    private static readonly string[] IdeaSlugs =
+    [
+        "telegram-mini-app",
+        "ai-assistant",
+        "online-booking",
+        "custom-crm",
+        "1c-crm-integration",
+        "marketplace-seller-analytics",
+        "client-portal",
+        "price-monitoring",
+        "inventory-management",
+        "business-dashboard",
+    ];
+
     [HttpGet("sitemap.xml")]
     public async Task<IActionResult> GetSitemap(CancellationToken cancellationToken)
     {
@@ -34,6 +50,7 @@ public class SeoController(
         paths.AddRange((await caseStudies.GetAllAsync(cancellationToken))
             .Where(x => x.Slug.Length > 0)
             .Select(x => ($"/projects/{x.Slug}", "0.7")));
+        paths.AddRange(IdeaSlugs.Select(slug => ($"/ideas/{slug}", "0.7")));
 
         var urlset = new XElement(Sitemap + "urlset",
             new XAttribute(XNamespace.Xmlns + "xhtml", Xhtml),

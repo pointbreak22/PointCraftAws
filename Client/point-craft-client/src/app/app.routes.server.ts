@@ -13,8 +13,10 @@ export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Server },
   { path: 'services/:slug', renderMode: RenderMode.Server },
   { path: 'projects/:slug', renderMode: RenderMode.Server },
+  { path: 'ideas/:slug', renderMode: RenderMode.Server },
   { path: 'en', renderMode: RenderMode.Server },
   { path: 'en/services/:slug', renderMode: RenderMode.Server },
   { path: 'en/projects/:slug', renderMode: RenderMode.Server },
+  { path: 'en/ideas/:slug', renderMode: RenderMode.Server },
   { path: '**', renderMode: RenderMode.Server },
 ];

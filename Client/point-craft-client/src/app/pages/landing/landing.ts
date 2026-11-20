@@ -3,6 +3,7 @@ import { CaseStudiesSection } from '../../components/case-studies-section/case-s
 import { ContactSection } from '../../components/contact-section/contact-section';
 import { FaqSection } from '../../components/faq-section/faq-section';
 import { HeroSection } from '../../components/hero-section/hero-section';
+import { ProjectIdeasSection } from '../../components/project-ideas-section/project-ideas-section';
 import { ProcessSection } from '../../components/process-section/process-section';
 import { ServicesGrid } from '../../components/services-grid/services-grid';
 import { SiteFooter } from '../../components/site-footer/site-footer';
@@ -10,6 +11,7 @@ import { SiteHeader } from '../../components/site-header/site-header';
 import { TechStackSection } from '../../components/tech-stack-section/tech-stack-section';
 import { SeoService } from '../../core/seo/seo.service';
 import { BRAND_KEYWORDS, ORGANIZATION_ID, SITE_ALTERNATE_NAMES, SITE_NAME, SITE_URL } from '../../core/seo/site';
+import { RANKED_PROJECT_IDEAS } from '../../i18n/project-ideas';
 import { localizePath } from '../../shared/locale-path';
 import { ContentStore } from '../../stores/content.store';
 import { LocaleStore } from '../../stores/locale.store';
@@ -23,6 +25,7 @@ import { LocaleStore } from '../../stores/locale.store';
     TechStackSection,
     ProcessSection,
     CaseStudiesSection,
+    ProjectIdeasSection,
     FaqSection,
     ContactSection,
     SiteFooter,
@@ -71,6 +74,16 @@ export class Landing {
                 url: SITE_URL + localizePath(`/services/${service.slug}`, locale),
                 provider: { '@id': ORGANIZATION_ID },
               },
+            })),
+          },
+          {
+            '@type': 'ItemList',
+            name: t.ideas.heading,
+            itemListElement: RANKED_PROJECT_IDEAS.map((idea, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: idea.text[locale].title,
+              url: SITE_URL + localizePath(`/ideas/${idea.slug}`, locale),
             })),
           },
           {
