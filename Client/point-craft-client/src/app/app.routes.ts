@@ -9,6 +9,7 @@ const publicPages: Routes = [
   { path: '', component: Landing },
   { path: 'services/:slug', loadComponent: () => import('./pages/service-page/service-page').then((m) => m.ServicePage) },
   { path: 'projects/:slug', loadComponent: () => import('./pages/project-page/project-page').then((m) => m.ProjectPage) },
+  { path: 'ideas/:slug', loadComponent: () => import('./pages/idea-page/idea-page').then((m) => m.IdeaPage) },
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound) },
 ];
 
